@@ -3,6 +3,11 @@
 <body>
 	<div id="game"></div>
 	<script src="./crafty.js"></script>
+<<<<<<< HEAD
+=======
+	<script src="./jquery-3.1.1.min.js"></script>
+
+>>>>>>> 75b2e45c48b49ed36e80a796a1b7b7794041bec2
 	<script src="./bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 	<script>
 
@@ -27,7 +32,20 @@
 			.attr({x: 0, y: 250, w: 250, h: 10})
 			.color('green');
 
+<<<<<<< HEAD
 		Crafty.e('2D, Canvas, Color, Twoway, Gravity')
+=======
+		Crafty.e('Floor, 2D, DOM, Color')
+			.attr({x: 0, y: 250, w: 250, h: 10})
+			.color('red');
+
+		$('#ent2').css({
+			float:"right",
+			position:"fixed"
+		});
+
+		Crafty.e('2D, DOM, Color, Twoway, Gravity')
+>>>>>>> 75b2e45c48b49ed36e80a796a1b7b7794041bec2
 			.attr({x: 0, y: 0, w: 50, h: 50})
 			.color('#F00')
 			.twoway(100)
