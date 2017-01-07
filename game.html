@@ -9,6 +9,11 @@
 
 		callback = function(records){
    			console.log(records);
+   			if (records[0].removedNodes.length > 0){
+   				records[0].removedNodes.forEach(function(elm){
+   					console.log(elm.id);
+   				});
+   			}
 		}
 
 		var observer = new MutationObserver(callback);
@@ -34,7 +39,7 @@
 		});
 
 
-		Crafty.e('2D, Canvas, Color, Twoway, Gravity')
+		Crafty.e('2D, DOM, Color, Twoway, Gravity')
 			.attr({x: 0, y: 0, w: 50, h: 50})
 			.color('#F00')
 			.twoway(510)
