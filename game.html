@@ -7,18 +7,6 @@
 	<script src="./bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 	<script>
 
-		var observer = new MutationObserver(function(mutations){
-			mutations.forEach(function(mutation) {
-				console.log(mutation.type);
-			});
-		});
-
-		var observerConfig = {
-			attributes: true, 
-			childList: true, 
-			characterData: true,
-			subtree: true,
-		};
 
 		var targetNode = document.body;
 
@@ -44,7 +32,7 @@
 			.gravity('Floor');
 		var observer = new MutationObserver(function(mutations){
                         mutations.forEach(function(mutation) {
-                                console.log(mutation.type);
+                                console.log(observer);
                         });
                 });
 
