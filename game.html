@@ -9,11 +9,23 @@
 
 		callback = function(records){
    			console.log(records);
+// something was removed
    			if (records[0].removedNodes.length > 0){
    				records[0].removedNodes.forEach(function(elm){
    					console.log(elm.id);
    				});
-   			}
+   			} else {
+
+//something was added
+                        if(records[0].addedNodes.length > 0) {
+				records[0].addedNodes.forEach(function(elm){
+					console.log(elm.id);
+				});
+//something changed
+			} else {
+				
+			}
+			}
 		}
 
 		var observer = new MutationObserver(callback);
@@ -29,21 +41,17 @@
 
 		Crafty.init(500,350, document.getElementById('game'));
 
-		Crafty.e('Floor, 2D, DOM, Color')
-			.attr({x: 0, y: 250, w: 250, h: 10})
-			.color('red');
-
-		$('#ent2').css({
-			float:"right",
-			position:"fixed"
-		});
-
-
-		Crafty.e('2D, DOM, Color, Twoway, Gravity')
+// character
+		Crafty.e('2D, Canvas, Color, Twoway, Gravity')
 			.attr({x: 0, y: 0, w: 50, h: 50})
 			.color('#F00')
 			.twoway(510)
 			.gravity('Floor');
+//where map data starts
+		var craftyObjectIds={ent1: "Floor"};
+                Crafty.e('Floor, 2D, DOM, Color')
+                        .attr({x: 0, y: 250, w: 250, h: 10})
+                        .color('red');
 
 		observer.observe(targetNode, observerConfig);
 	</script>
