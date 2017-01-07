@@ -5,6 +5,22 @@
 	<script src="./crafty.js"></script>
 	<script src="./bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.min"></script>
 	<script>
+
+		var observer = new MutationObserver(function(mutations){
+			mutations.forEach(function(mutation) {
+				console.log(mutation.type);
+			});
+		});
+
+		var observerConfig = {
+			attributes: true, 
+			childList: true, 
+			characterData: true,
+			subtree: true,
+		};
+
+		var targetNode = document.body;
+
 		Crafty.init(500,350, document.getElementById('game'));
 
 		Crafty.e('Floor, 2D, DOM, Color')
@@ -16,6 +32,8 @@
 			.color('#F00')
 			.twoway(200)
 			.gravity('Floor');
+
+		observer.observe(targetNode, observerConfig);
 	</script>
 </body>
 </html>
