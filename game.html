@@ -7,11 +7,11 @@
 	<script src="./bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 	<script>
 
-		var observer = new MutationObserver(function(mutations){
-			mutations.forEach(function(mutation) {
-				console.log(mutation.type);
-			});
-		});
+		callback = function(records){
+   			console.log(records);
+		}
+
+		var observer = new MutationObserver(callback);
 
 		var observerConfig = {
 			attributes: true, 
@@ -26,9 +26,6 @@
 
 		Crafty.e('Floor, 2D, DOM, Color')
 			.attr({x: 0, y: 250, w: 250, h: 10})
-			
-		Crafty.e('Floor, 2D, DOM, Color')
-			.attr({x: 0, y: 250, w: 250, h: 10})
 			.color('red');
 
 		$('#ent2').css({
@@ -40,7 +37,7 @@
 		Crafty.e('2D, Canvas, Color, Twoway, Gravity')
 			.attr({x: 0, y: 0, w: 50, h: 50})
 			.color('#F00')
-			.twoway(100)
+			.twoway(510)
 			.gravity('Floor');
 
 		observer.observe(targetNode, observerConfig);
