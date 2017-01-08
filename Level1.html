@@ -13,8 +13,9 @@
 // something was removed
    			if (records[0].removedNodes.length > 0){
    				records[0].removedNodes.forEach(function(elm){
-   					console.log(elm.id);
-   				});
+					console.log(elm.id);
+					Crafty(craftyObjectIds[elm.id]).destroy();
+				});
    			} else {
 
 //something was added
