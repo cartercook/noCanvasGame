@@ -1,75 +1,11 @@
 <html>
 <head></head>
-<body>
+<body onload="plzSveMe()">
 	<div id="game"></div>
 	<script src="./crafty.js"></script>
 	<script src="./jquery-3.1.1.min.js"></script>
 	<script>
-		var idNum = 1;
-		var adding = false;
-		var changing = false;
-
-		var observer = new MutationObserver(function(records){
-                        console.log("call:");
-                        console.log(records);
-// something was removed
-                        if (records[0].removedNodes.length > 0){
-                                if (adding == false && changing == false) {
-                                records[0].removedNodes.forEach(function(elm){
-                                        console.log("destroyed" + elm.id);
-                                        Crafty(craftyObjectIds[elm.id]).destroy();
-                                });
-                                }
-                        } else {
-
-//something was added
-                        if(records[0].addedNodes.length > 0) {
-                                records[0].addedNodes.forEach(function(elm){
-                                        console.log("adding: " + adding);
-                                        if (adding == false) {
-                                                adding=true;
-                                                console.log(elm);
-                                                console.log(elm.outerHTML);
-                                                var tranformRe = /transform: translate3d\(\d*px, \d*px, \d*px\)/g;
-                                                var transform = tranformRe.exec(elm.outerHTML);
-						console.log(transform);
-                                                var numRe = /\d+/g;
-                                                var xyNums =  numRe.exec(transform);
-                                                var posX = numRe.exec(transform);
-                                                var posY = numRe.exec(transform);
-						console.log("x:" + posX + "Y:" + posY);
-                                                var sizeW = elm.clientWidth;
-                                                var sizeH = elm.clientHeight;
-                                                console.log(elm.parentNode);
-                                                elm.parentNode.removeChild(elm);
-                                                Crafty.e("entity" + idNum + ", 2D, DOM, Color")
-                                                .attr({x: posX, y: posY, w: sizeW, h: sizeH})
-						.color('red');
-                                                adding = false;
-                                        } else {
-                                                console.log("stopped adding");
-                                                console.log("changing: " + changing);
-                                                if (changing == false) {
-                                                        changing=true;
-                                                        changing=false;
-                                                }
-                                        }
-                                });
-//something changed
-                        } else {
-                                console.log(records[0].target.style["width"]);
-                        }
-                        }
-                });
-
-		var observerConfig = {
-			attributes: true, 
-			childList: true, 
-			characterData: true,
-			subtree: true,
-		};
-
-		var targetNode = document.body;
+		
 
 		Crafty.init(500,350, document.getElementById('game'));
 
@@ -92,13 +28,107 @@
 			.color('#F00')
 			.twoway(150)
 			.gravity('Floor');
-//where map data starts
-		var craftyObjectIds={ent1: "Floor"};
-                Crafty.e('Floor, 2D, DOM, Color')
-                        .attr({x: 0, y: 250, w: 250, h: 10})
-                        .color('red');
 
+
+		var idNum = 1;
+		var adding = false;
+		var changing = false;
+		var craftyObjectIds = {ent1: "Floor"};
+
+		var observer = new MutationObserver(function(records){
+			console.log("call:");
+            console.log(records);
+// something was removed
+            if (records[0].removedNodes.length > 0){
+				if (adding == false && changing == false) {
+                    records[0].removedNodes.forEach(function(elm){
+                        console.log("destroyed" + elm.id);
+                        Crafty(craftyObjectIds[elm.id]).destroy();
+					});
+				}
+            } else {
+
+//something was added
+				if(records[0].addedNodes.length > 0) {
+                    records[0].addedNodes.forEach(function(elm){
+						console.log("adding: " + elm);
+						if (adding == false && changing == false) {
+							adding=true;
+							console.log(elm);
+							console.log(elm.outerHTML);
+							var tranformRe = /transform: translate3d\(\d*px, \d*px, \d*px\)/g;
+							var transform = tranformRe.exec(elm.outerHTML);
+							console.log(transform);
+							var numRe = /\d+/g;
+							var xyNums =  numRe.exec(transform);
+							var posX = numRe.exec(transform);
+							var posY = numRe.exec(transform);
+							console.log("x:" + posX + "Y:" + posY);
+							var sizeW = elm.clientWidth;
+							var sizeH = elm.clientHeight;
+							console.log(elm.parentNode);
+							elm.parentNode.removeChild(elm);
+							Crafty.e("entity" + idNum + ", 2D, DOM, Color")
+							.attr({x: posX, y: posY, w: sizeW, h: sizeH})
+							.color('red');
+							
+						} else {
+							craftyObjectIds[elm.id] = "entity"+idNum;
+							idNum++;
+							console.log(craftyObjectIds);
+							adding=false;
+							changing = false;
+							console.log("done adding");
+						}
+                    });
+//something changed
+                } else {
+				    console.log("changing:");
+					console.log(records[0].target);
+				    var elm = records[0].target;
+				    var elementInArr = typeof craftyObjectIds[elm.id] !== "undefined";
+					console.log("objectID " + craftyObjectIds[elm.id]);
+                    if (changing == false && adding == false && elementInArr) {
+						changing=true;
+						var tranformRe = /transform: translate3d\(\d*px, \d*px, \d*px\)/g;
+                        var transform = tranformRe.exec(elm.outerHTML);
+                        console.log(transform);
+                        var numRe = /\d+/g;
+                        var xyNums =  numRe.exec(transform);
+                        var posX = numRe.exec(transform);
+                        var posY = numRe.exec(transform);
+                        console.log("x:" + posX + "Y:" + posY);
+                        var sizeW = elm.clientWidth;
+                        var sizeH = elm.clientHeight;
+                        console.log("objId: "+ craftyObjectIds[elm.id]);
+						console.log(Crafty(craftyObjectIds[elm.id]));
+					    Crafty(craftyObjectIds[elm.id]).destroy;
+                        elm.parentNode.removeChild(elm);
+                        Crafty.e("entity" + idNum + ", 2D, DOM, Color")
+                        .attr({x: posX, y: posY, w: sizeW, h: sizeH})
+                        .color('red');
+						
+                    } else {
+						craftyObjectIds[elm.id] = "entity"+idNum;
+						idNum++;
+						changing=false;
+						adding=false;
+						console.log("done changing");
+					}
+                }
+            }
+        });
+		var observerConfig = {
+			attributes: true, 
+			childList: true, 
+			characterData: true,
+			subtree: true,
+		};
+
+		var targetNode = document.body;
+		function plzSveMe() {
 		observer.observe(targetNode, observerConfig);
+		}
 	</script>
 </body>
 </html>
