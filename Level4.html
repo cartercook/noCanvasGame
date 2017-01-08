@@ -1,0 +1,103 @@
+<html>
+<head></head>
+<body>
+	<div id="game"></div>
+	<script src="./crafty.js"></script>
+	<script src="./jquery-3.1.1.min.js"></script>
+	<script>
+		var idNum = 1;
+		var addStop = 0;
+		callback = function(records){
+   			console.log(records);
+// something was removed
+   			if (records[0].removedNodes.length > 0){
+   				records[0].removedNodes.forEach(function(elm){
+   					console.log(elm.id);
+					Crafty(craftyObjectIds[elm.id]).destroy();
+   				});
+   			} else {
+
+//something was added
+            if(records[0].addedNodes.length > 0) {
+				records[0].addedNodes.forEach(function(elm){
+					if (addStop == 0) {
+						addStop = 1;
+						console.log(elm);
+						var myre = /[0-9]*/;
+						var nums = myre.exec(elm.style[transform]);
+						var posX = nums[0];
+						var posY = nums[1];
+						var sizeW = elm.clientWidth;
+						var sizeH = elm.clientHeight;
+						Crafty.e("entity" + idNum + ", 2D, DOM, Color")
+						.attr({x: posX, y: posY, w: sizeW, h: sizeH});
+						if(elm) {
+							elm.parentNode.removeChild(elm);
+						}
+					} else {
+						console.log("stopped adding");
+					}
+				});
+//something changed
+			} else {
+				console.log(records[0].target.style["width"]);
+			}
+			}
+		}
+
+		var observer = new MutationObserver(callback);
+
+		var observerConfig = {
+			attributes: true, 
+			childList: true, 
+			characterData: true,
+			subtree: true,
+		};
+
+		var targetNode = document.body;
+
+		Crafty.init(500,450, document.getElementById('game'));
+
+		Crafty.e('2D, Collision, Canvas, Color')
+			.attr({x: 450, y: 50, w: 35, h: 35})
+			.color('green')
+			.onHit('Twoway', function(data){
+				window.alert("HAHAHAHAHAHHHAH GET FUCKED");
+			});
+
+    	Crafty.e('Floor, 2D, Canvas, Color')
+        	.attr({x: 400, y: 85, w: 100, h: 10})
+        	.color('red');
+
+    	Crafty.e('Floor, 2D, DOM, Color')
+        	.attr({x: 225, y: 300, w: 150, h: 10})
+        	.color('red');
+
+		Crafty.e('2D, Collision, Canvas, Color')
+			.attr({x: -200, y: 500, w: 800, h: 1})
+			.color('green')
+			.onHit('Twoway', function(data){
+				window.location.href = "Level1.html";
+			});
+
+		$('#ent2').css({
+			float:"right",
+			position:"fixed"
+		});
+
+
+		Crafty.e('2D, Canvas, Color, Twoway, Gravity')
+			.attr({x: 0, y: 0, w: 25, h: 25})
+			.color('#F00')
+			.twoway(150)
+			.gravity('Floor');
+//where map data starts
+		var craftyObjectIds={ent4: "Floor"};
+        	Crafty.e('Floor, 2D, Canvas, Color')
+            	.attr({x: 0, y: 300, w: 150, h: 10})
+            	.color('red');
+
+		observer.observe(targetNode, observerConfig);
+	</script>
+</body>
+</html>
