@@ -1,7 +1,7 @@
 <html>
 <head></head>
 <body>
-	<div id="game"></div>
+	<div id="game">y=225, x=toolow</div>
 	<script src="./crafty.js"></script>
 	<script src="./jquery-3.1.1.min.js"></script>
 	<script>
@@ -59,14 +59,14 @@
 		Crafty.init(500,450, document.getElementById('game'));
 
 		Crafty.e('2D, Collision, Canvas, Color')
-			.attr({x: 450, y: 50, w: 35, h: 35})
+			.attr({x: 450, y: 85, w: 35, h: 35})
 			.color('green')
 			.onHit('Twoway', function(data){
 				window.alert("HAHAHAHAHAHHHAH GET FUCKED");
 			});
 
     	Crafty.e('Floor, 2D, Canvas, Color')
-        	.attr({x: 400, y: 85, w: 100, h: 10})
+        	.attr({x: 400, y: 120, w: 100, h: 10})
         	.color('red');
 
     	Crafty.e('Floor, 2D, DOM, Color')
@@ -77,7 +77,7 @@
 			.attr({x: -200, y: 500, w: 800, h: 1})
 			.color('green')
 			.onHit('Twoway', function(data){
-				window.location.href = "Level1.html";
+				window.location.href = "Level3.html";
 			});
 
 		$('#ent2').css({
@@ -92,7 +92,7 @@
 			.twoway(150)
 			.gravity('Floor');
 //where map data starts
-		var craftyObjectIds={ent4: "Floor"};
+		var craftyObjectIds={ent3: "Floor"};
         	Crafty.e('Floor, 2D, Canvas, Color')
             	.attr({x: 0, y: 300, w: 150, h: 10})
             	.color('red');

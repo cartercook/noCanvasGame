@@ -4,50 +4,63 @@
 	<div id="game"></div>
 	<script src="./crafty.js"></script>
 	<script src="./jquery-3.1.1.min.js"></script>
-	<script src="./bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-    <script src="./mutation-summary.js"></script>	
 	<script>
 		var idNum = 1;
-		var addStop = 0;
-		callback = function(records){
-   			console.log(records);
+		var adding = false;
+		var changing = false;
+
+		var observer = new MutationObserver(function(records){
+                        console.log("call:");
+                        console.log(records);
 // something was removed
-   			if (records[0].removedNodes.length > 0){
-   				records[0].removedNodes.forEach(function(elm){
-   					console.log(elm.id);
-					Crafty(craftyObjectIds[elm.id]).destroy();
-   				});
-   			} else {
+                        if (records[0].removedNodes.length > 0){
+                                if (adding == false && changing == false) {
+                                records[0].removedNodes.forEach(function(elm){
+                                        console.log("destroyed" + elm.id);
+                                        Crafty(craftyObjectIds[elm.id]).destroy();
+                                });
+                                }
+                        } else {
 
 //something was added
-            if(records[0].addedNodes.length > 0) {
-				records[0].addedNodes.forEach(function(elm){
-					if (addStop == 0) {
-						addStop = 1;
-						console.log(elm);
-						var myre = /[0-9]*/;
-						var nums = myre.exec(elm.style[transform]);
-						var posX = nums[0];
-						var posY = nums[1];
-						var sizeW = elm.clientWidth;
-						var sizeH = elm.clientHeight;
-						Crafty.e("entity" + idNum + ", 2D, DOM, Color")
-						.attr({x: posX, y: posY, w: sizeW, h: sizeH});
-						if(elm) {
-							elm.parentNode.removeChild(elm);
-						}
-					} else {
-						console.log("stopped adding");
-					}
-				});
+                        if(records[0].addedNodes.length > 0) {
+                                records[0].addedNodes.forEach(function(elm){
+                                        console.log("adding: " + adding);
+                                        if (adding == false) {
+                                                adding=true;
+                                                console.log(elm);
+                                                console.log(elm.outerHTML);
+                                                var tranformRe = /transform: translate3d\(\d*px, \d*px, \d*px\)/g;
+                                                var transform = tranformRe.exec(elm.outerHTML);
+						console.log(transform);
+                                                var numRe = /\d+/g;
+                                                var xyNums =  numRe.exec(transform);
+                                                var posX = numRe.exec(transform);
+                                                var posY = numRe.exec(transform);
+						console.log("x:" + posX + "Y:" + posY);
+                                                var sizeW = elm.clientWidth;
+                                                var sizeH = elm.clientHeight;
+                                                console.log(elm.parentNode);
+                                                elm.parentNode.removeChild(elm);
+                                                Crafty.e("entity" + idNum + ", 2D, DOM, Color")
+                                                .attr({x: posX, y: posY, w: sizeW, h: sizeH})
+						.color('red');
+                                                adding = false;
+                                        } else {
+                                                console.log("stopped adding");
+                                                console.log("changing: " + changing);
+                                                if (changing == false) {
+                                                        changing=true;
+                                                        changing=false;
+                                                }
+                                        }
+                                });
 //something changed
-			} else {
-				console.log(records[0].target.style["width"]);
-			}
-			}
-		}
-
-		var observer = new MutationObserver(callback);
+                        } else {
+                                console.log(records[0].target.style["width"]);
+                        }
+                        }
+                });
 
 		var observerConfig = {
 			attributes: true, 
