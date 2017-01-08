@@ -1,6 +1,6 @@
 <html>
 <head></head>
-<body>
+<body onload="onplz()">
 	<div id="game">y=225, x=toolow</div>
 	<script src="./crafty.js"></script>
 	<script src="./jquery-3.1.1.min.js"></script>
@@ -8,16 +8,18 @@
 	<script>
 		var idNum = 1;
 		var addStop = 0;
+		var changing = false;
 		callback = function(records){
    			console.log(records);
 // something was removed
-   			if (records[0].removedNodes.length > 0){
+   			if (records[0].removedNodes.length > 0 && changing == false){
    				records[0].removedNodes.forEach(function(elm){
    					console.log(elm.id);
 					Crafty(craftyObjectIds[elm.id]).destroy();
    				});
+				
    			} else {
-
+			changing = false;
 //something was added
             if(records[0].addedNodes.length > 0) {
 				records[0].addedNodes.forEach(function(elm){
@@ -41,7 +43,26 @@
 				});
 //something changed
 			} else {
-				console.log(records[0].target.style["width"]);
+				var elm = records[0].target;
+
+				if ("ent3".localeCompare(elm.id) == 0) {
+					changing = true;
+					var tranformRe = /transform: translate3d\(\d*px, \d*px, \d*px\)/g;
+					var transform = tranformRe.exec(elm.outerHTML);
+					console.log(transform);
+					var numRe = /\d+/g;
+					var xyNums =  numRe.exec(transform);
+					var posX = numRe.exec(transform);
+					var posY = numRe.exec(transform);
+					console.log("x:" + posX + "Y:" + posY);
+					var sizeW = elm.clientWidth;
+					var sizeH = elm.clientHeight;
+					elm.parentNode.removeChild(elm);
+					Crafty.e("Floor, 2D, DOM, Color")
+					.attr({x: parseInt(posX[0]), y: parseInt(posY[0]), w: sizeW, h: sizeH})
+					.color('red');
+					
+				}
 			}
 			}
 		}
@@ -87,8 +108,9 @@
         	Crafty.e('Floor, 2D, Canvas, Color')
             	.attr({x: 0, y: 300, w: 150, h: 10})
             	.color('red');
-
+		function onplz() {
 		observer.observe(targetNode, observerConfig);
+		}
 	</script>
 </body>
 </html>
