@@ -5,22 +5,40 @@
 	<script src="./crafty.js"></script>
 	<script src="./jquery-3.1.1.min.js"></script>
 	<script src="./bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-        <script src="./mutation-summary.js"></script>	
+    <script src="./mutation-summary.js"></script>	
 	<script>
-
+		var idNum = 1;
+		var addStop = 0;
 		callback = function(records){
    			console.log(records);
 // something was removed
    			if (records[0].removedNodes.length > 0){
    				records[0].removedNodes.forEach(function(elm){
    					console.log(elm.id);
+					Crafty(craftyObjectIds[elm.id]).destroy();
    				});
    			} else {
 
 //something was added
             if(records[0].addedNodes.length > 0) {
 				records[0].addedNodes.forEach(function(elm){
-					console.log(elm.id);
+					if (addStop == 0) {
+						addStop = 1;
+						console.log(elm);
+						var myre = /[0-9]*/;
+						var nums = myre.exec(elm.style[transform]);
+						var posX = nums[0];
+						var posY = nums[1];
+						var sizeW = elm.clientWidth;
+						var sizeH = elm.clientHeight;
+						Crafty.e("entity" + idNum + ", 2D, DOM, Color")
+						.attr({x: posX, y: posY, w: sizeW, h: sizeH});
+						if(elm) {
+							elm.parentNode.removeChild(elm);
+						}
+					} else {
+						console.log("stopped adding");
+					}
 				});
 //something changed
 			} else {
@@ -51,17 +69,12 @@
 			.attr({x: 170, y: 50, w: 10, h: 200})
 			.color('red');
 
-		Crafty.e('WINNING, 2D, DOM, Color')
+		Crafty.e('WINNING, 2D, Canvas, Color')
 			.attr({x: 300, y: 215, w: 35, h: 35})
 			.color('green');
 
-		$('#ent2').css({
-			float:"right",
-			position:"fixed"
-		});
 
-
-		Crafty.e('2D, DOM, Color, Twoway, Gravity')
+		Crafty.e('2D, Canvas, Color, Twoway, Gravity')
 			.attr({x: 0, y: 0, w: 25, h: 25})
 			.color('#F00')
 			.twoway(150)

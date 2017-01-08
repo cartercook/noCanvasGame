@@ -13,8 +13,9 @@
 // something was removed
    			if (records[0].removedNodes.length > 0){
    				records[0].removedNodes.forEach(function(elm){
-   					console.log(elm.id);
-   				});
+					console.log(elm.id);
+					Crafty(craftyObjectIds[elm.id]).destroy();
+				});
    			} else {
 
 //something was added
@@ -46,7 +47,14 @@
 			.attr({x: 300, y: 215, w: 35, h: 35})
 			.color('green')
 			.onHit('Twoway', function(data){
-				console.log(data);
+				window.location.href = "Level2.html";
+			});
+
+		Crafty.e('2D, Collision, Canvas, Color')
+			.attr({x: -200, y: 400, w: 800, h: 1})
+			.color('green')
+			.onHit('Twoway', function(data){
+				window.location.href = "Level1.html";
 			});
 
 		$('#ent2').css({

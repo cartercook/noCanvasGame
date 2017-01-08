@@ -40,13 +40,13 @@
 
 		var targetNode = document.body;
 
-		Crafty.init(500,350, document.getElementById('game'));
+		Crafty.init(500,450, document.getElementById('game'));
 
 		Crafty.e('2D, Collision, Canvas, Color')
-			.attr({x: 300, y: 215, w: 35, h: 35})
+			.attr({x: 100, y: 315, w: 35, h: 35})
 			.color('green')
 			.onHit('Twoway', function(data){
-				console.log(data);
+				console.log("HAHAHAHAHAHHHAH GET FUCKED");
 			});
 
 		$('#ent2').css({
