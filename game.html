@@ -30,8 +30,17 @@
 		Crafty.init(500,350, document.getElementById('game'));
 
 		Crafty.e('Floor, 2D, DOM, Color')
-			.attr({x: 0, y: 250, w: 250, h: 10})
+			.attr({x: 0, y: 250, w: 400, h: 10})
 			.color('red');
+
+		Crafty.e('Collision, 2D, DOM, Color')
+			.checkHits('solid')
+			.attr({x: 170, y: 50, w: 10, h: 200})
+			.color('red');
+
+		Crafty.e('WINNING, 2D, DOM, Color')
+			.attr({x: 300, y: 215, w: 35, h: 35})
+			.color('green');
 
 		$('#ent2').css({
 			float:"right",
@@ -40,9 +49,9 @@
 
 
 		Crafty.e('2D, DOM, Color, Twoway, Gravity')
-			.attr({x: 0, y: 0, w: 50, h: 50})
+			.attr({x: 0, y: 0, w: 25, h: 25})
 			.color('#F00')
-			.twoway(510)
+			.twoway(150)
 			.gravity('Floor');
 
 		observer.observe(targetNode, observerConfig);
