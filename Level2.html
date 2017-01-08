@@ -4,10 +4,10 @@
 	<div id="game"></div>
 	<script src="./crafty.js"></script>
 	<script src="./jquery-3.1.1.min.js"></script>
-	<script src="./bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 	<script>
 		var idNum = 1;
 		var addStop = 0;
+		var IdHitThat = true;
 		callback = function(records){
    			console.log(records);
 // something was removed
@@ -63,7 +63,10 @@
 			.attr({x: 100, y: 315, w: 35, h: 35})
 			.color('green')
 			.onHit('Twoway', function(data){
-				window.alert("HAHAHAHAHAHHHAH GET FUCKED");
+				if (IdHitThat){
+					window.alert("HAHAHAHAHAHHHAH GET FUCKED");
+					IdHitThat = false;
+				}
 			});
 
 
