@@ -83,8 +83,8 @@
 		Crafty.e('2D, Collision, Canvas, Color')
 			.attr({x: 450, y: 85, w: 35, h: 35})
 			.color('green')
-			.onHit('Twoway', function(data){
-				window.alert("HAHAHAHAHAHHHAH GET FUCKED");
+			.onHit('Twoway', function(data){				
+				window.location.href = "game.html";
 			});
 
     	Crafty.e('Floor, 2D, Canvas, Color')
@@ -99,7 +99,7 @@
 			.attr({x: -200, y: 500, w: 800, h: 1})
 			.color('green')
 			.onHit('Twoway', function(data){
-				window.location.href = "Level3.html";
+				window.location.href = "Level4.html";
 			});
 
 			createPlayer();
