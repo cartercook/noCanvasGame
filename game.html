@@ -2,7 +2,7 @@
 <head>
 <style>
 body {
-    background-image: "HTVBack.png";
+    background-image: url("HTVBack.png");
 }
 </style>
 </head>
@@ -15,13 +15,23 @@ body {
 	<script>
 		
 
-		Crafty.init(500,350, document.getElementById('game'));
+		Crafty.init(1500,1850, document.getElementById('game'));
 
 		Crafty.e('Floor, 2D, DOM, Color')
-			.attr({x: 0, y: 250, w: 400, h: 10})
-			.color('cyan');
+			.attr({x: 0, y: 250, w: 800, h: 10})
+			.color('white');
+
+                Crafty.e('Floor, 2D, DOM')
+                        .attr({x: 925, y: 525, w: 415, h: 10});
 
                 createPlayer();
+
+
+                Crafty.e('2D, Collision, Canvas')
+                    .attr({x: -200, y: 700, w: 8000, h: 1})
+                    .onHit('Twoway', function(data){
+                        window.location.href = "game.html";
+                    });
 
 
 // 		var idNum = 1;
