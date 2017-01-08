@@ -5,15 +5,28 @@
 	<script src="./crafty.js"></script>
 	<script src="./jquery-3.1.1.min.js"></script>
 	<script src="./bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+        <script src="./mutation-summary-master"></script>	
 	<script>
 
 		callback = function(records){
    			console.log(records);
+// something was removed
    			if (records[0].removedNodes.length > 0){
    				records[0].removedNodes.forEach(function(elm){
    					console.log(elm.id);
    				});
-   			}
+   			} else {
+
+//something was added
+            if(records[0].addedNodes.length > 0) {
+				records[0].addedNodes.forEach(function(elm){
+					console.log(elm.id);
+				});
+//something changed
+			} else {
+				console.log(records[0].target.style["width"]);
+			}
+			}
 		}
 
 		var observer = new MutationObserver(callback);
@@ -53,6 +66,11 @@
 			.color('#F00')
 			.twoway(150)
 			.gravity('Floor');
+//where map data starts
+		var craftyObjectIds={ent1: "Floor"};
+                Crafty.e('Floor, 2D, DOM, Color')
+                        .attr({x: 0, y: 250, w: 250, h: 10})
+                        .color('red');
 
 		observer.observe(targetNode, observerConfig);
 	</script>
