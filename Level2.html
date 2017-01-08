@@ -62,11 +62,8 @@
 		Crafty.e('2D, Collision, Canvas, Color')
 			.attr({x: 100, y: 315, w: 35, h: 35})
 			.color('green')
-			.onHit('Twoway', function(data){
-				if (IdHitThat){
-					window.alert("HAHAHAHAHAHHHAH GET FUCKED");
-					IdHitThat = false;
-				}
+			.onHit('Twoway', function(data){				
+				window.location.href = "Level3.html";
 			});
 
 

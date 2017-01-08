@@ -51,11 +51,20 @@
 		Crafty.e('2D, Collision, Canvas, Color')
 			.attr({x: 100, y: 215, w: 35, h: 35})
 			.color('green')
-			.onHit('Twoway', function(data){
-				console.log("HAHAHAHAHAHHHAH GET FUCKED");
+			.onHit('Twoway', function(data){				
+				window.location.href = "Level4.html";
 			}).bind("EnterFrame", function () {
             	this.attr({x: window.innerWidth - 135})
             });
+
+
+
+		Crafty.e('2D, Collision, Canvas, Color')
+			.attr({x: -200, y: 600, w: 1800, h: 1})
+			.color('green')
+			.onHit('Twoway', function(data){
+				window.location.href = "Level3.html";
+			});
 
 		Crafty.e('2D, Canvas, Color, Twoway, Gravity')
 			.attr({x: 0, y: 0, w: 25, h: 25})
