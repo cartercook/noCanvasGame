@@ -5,22 +5,39 @@
 	<script src="./crafty.js"></script>
 	<script src="./jquery-3.1.1.min.js"></script>
 	<script src="./bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-        <script src="./mutation-summary-master"></script>	
 	<script>
-
+		var idNum = 1;
+		var addStop = 0;
 		callback = function(records){
    			console.log(records);
 // something was removed
    			if (records[0].removedNodes.length > 0){
    				records[0].removedNodes.forEach(function(elm){
    					console.log(elm.id);
+					Crafty(craftyObjectIds[elm.id]).destroy();
    				});
    			} else {
 
 //something was added
             if(records[0].addedNodes.length > 0) {
 				records[0].addedNodes.forEach(function(elm){
-					console.log(elm.id);
+					if (addStop == 0) {
+						addStop = 1;
+						console.log(elm);
+						var myre = /[0-9]*/;
+						var nums = myre.exec(elm.style[transform]);
+						var posX = nums[0];
+						var posY = nums[1];
+						var sizeW = elm.clientWidth;
+						var sizeH = elm.clientHeight;
+						Crafty.e("entity" + idNum + ", 2D, DOM, Color")
+						.attr({x: posX, y: posY, w: sizeW, h: sizeH});
+						if(elm) {
+							elm.parentNode.removeChild(elm);
+						}
+					} else {
+						console.log("stopped adding");
+					}
 				});
 //something changed
 			} else {
@@ -46,7 +63,16 @@
 			.attr({x: 100, y: 315, w: 35, h: 35})
 			.color('green')
 			.onHit('Twoway', function(data){
-				console.log("HAHAHAHAHAHHHAH GET FUCKED");
+				window.alert("HAHAHAHAHAHHHAH GET FUCKED");
+			});
+
+
+
+		Crafty.e('2D, Collision, Canvas, Color')
+			.attr({x: -200, y: 500, w: 800, h: 1})
+			.color('green')
+			.onHit('Twoway', function(data){
+				window.location.href = "Level1.html";
 			});
 
 		$('#ent2').css({
@@ -61,10 +87,10 @@
 			.twoway(150)
 			.gravity('Floor');
 //where map data starts
-		var craftyObjectIds={ent1: "Floor"};
-        Crafty.e('Floor, 2D, Canvas, Color')
-            .attr({x: 0, y: 250, w: 400, h: 10})
-            .color('red');
+		var craftyObjectIds={ent4: "Floor"};
+        	Crafty.e('Floor, 2D, DOM, Color')
+            	.attr({x: 0, y: 250, w: 400, h: 10})
+            	.color('red');
 
 		observer.observe(targetNode, observerConfig);
 	</script>
