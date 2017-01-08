@@ -7,28 +7,62 @@
 	<script src="./bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
         <script src="./mutation-summary.js"></script>	
 	<script>
+		var idNum = 1;
+		var adding = false;
+		var changing = false;
 
-		callback = function(records){
-   			console.log(records);
+		var observer = new MutationObserver(function(records){
+                        console.log("call:");
+                        console.log(records);
 // something was removed
-   			if (records[0].removedNodes.length > 0){
-   				records[0].removedNodes.forEach(function(elm){
-   					console.log(elm.id);
-   				});
-   			} else {
+                        if (records[0].removedNodes.length > 0){
+                                if (adding == false && changing == false) {
+                                records[0].removedNodes.forEach(function(elm){
+                                        console.log("destroyed" + elm.id);
+                                        Crafty(craftyObjectIds[elm.id]).destroy();
+                                });
+                                }
+                        } else {
 
 //something was added
-            if(records[0].addedNodes.length > 0) {
-				records[0].addedNodes.forEach(function(elm){
-					console.log(elm.id);
-				});
+                        if(records[0].addedNodes.length > 0) {
+                                records[0].addedNodes.forEach(function(elm){
+                                        console.log("adding: " + adding);
+                                        if (adding == false) {
+                                                adding=true;
+                                                console.log(elm);
+                                                console.log(elm.outerHTML);
+                                                var tranformRe = /transform: translate3d\(\d*px, \d*px, \d*px\)/g;
+                                                var transform = tranformRe.exec(elm.outerHTML);
+						console.log(transform);
+                                                var numRe = /\d+/g;
+                                                var xyNums =  numRe.exec(transform);
+                                                var posX = numRe.exec(transform);
+                                                var posY = numRe.exec(transform);
+						console.log("x:" + posX + "Y:" + posY);
+                                                var sizeW = elm.clientWidth;
+                                                var sizeH = elm.clientHeight;
+                                                console.log(elm.parentNode);
+                                                elm.parentNode.removeChild(elm);
+                                                Crafty.e("entity" + idNum + ", 2D, DOM, Color")
+                                                .attr({x: posX, y: posY, w: sizeW, h: sizeH})
+						.color('red');
+                                                adding = false;
+                                        } else {
+                                                console.log("stopped adding");
+                                                console.log("changing: " + changing);
+                                                if (changing == false) {
+                                                        changing=true;
+                                                        changing=false;
+                                                }
+                                        }
+                                });
 //something changed
-			} else {
-				console.log(records[0].target.style["width"]);
-			}
-			}
-		}
-
+                        } else {
+                                console.log(records[0].target.style["width"]);
+                        }
+                        }
+                });
 		var observer = new MutationObserver(callback);
 
 		var observerConfig = {
@@ -54,13 +88,13 @@
 			.onHit('Twoway', function(data){				
 				window.location.href = "Level4.html";
 			}).bind("EnterFrame", function () {
-            	this.attr({x: window.innerWidth - 135})
+            	this.attr({x: window.innerWidth - 45})
             });
 
 
 
 		Crafty.e('2D, Collision, Canvas, Color')
-			.attr({x: -200, y: 600, w: 1800, h: 1})
+			.attr({x: -200, y: 900, w: 3000, h: 1})
 			.color('green')
 			.onHit('Twoway', function(data){
 				window.location.href = "Level3.html";
@@ -74,14 +108,14 @@
 //where map data starts
 		var craftyObjectIds={ent1: "Floor"};
         Crafty.e('Floor, 2D, Canvas, Color')
-            .attr({x: 0, y: 250, w: 400, h: 10})
+            .attr({x: 0, y: 250, w: 100, h: 10})
             .color('red');
 
         var platform2 = Crafty.e('Floor, 2D, Canvas, Color')
-            .attr({x: 0, y: 250, w: 400, h: 10})
+            .attr({x: 0, y: 250, w: 100, h: 10})
             .color('red')
             .bind("EnterFrame", function () {
-            	platform2.attr({x: window.innerWidth - 400})
+            	platform2.attr({x: window.innerWidth - 100})
             });
 
 		observer.observe(targetNode, observerConfig);
