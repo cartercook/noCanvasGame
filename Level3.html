@@ -1,0 +1,81 @@
+<html>
+<head></head>
+<body>
+	<div id="game"></div>
+	<script src="./crafty.js"></script>
+	<script src="./jquery-3.1.1.min.js"></script>
+	<script src="./bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+        <script src="./mutation-summary.js"></script>	
+	<script>
+
+		callback = function(records){
+   			console.log(records);
+// something was removed
+   			if (records[0].removedNodes.length > 0){
+   				records[0].removedNodes.forEach(function(elm){
+   					console.log(elm.id);
+   				});
+   			} else {
+
+//something was added
+            if(records[0].addedNodes.length > 0) {
+				records[0].addedNodes.forEach(function(elm){
+					console.log(elm.id);
+				});
+//something changed
+			} else {
+				console.log(records[0].target.style["width"]);
+			}
+			}
+		}
+
+		var observer = new MutationObserver(callback);
+
+		var observerConfig = {
+			attributes: true, 
+			childList: true, 
+			characterData: true,
+			subtree: true,
+		};
+
+		var targetNode = document.body;
+
+		Crafty.init(screen.width, screen.height, document.getElementById('game'));
+
+		// resize the canvas to fill browser window dynamically
+		$('#game').css({
+			width:"100%",
+			height:"100%"
+		})
+
+		Crafty.e('2D, Collision, Canvas, Color')
+			.attr({x: 100, y: 215, w: 35, h: 35})
+			.color('green')
+			.onHit('Twoway', function(data){
+				console.log("HAHAHAHAHAHHHAH GET FUCKED");
+			}).bind("EnterFrame", function () {
+            	this.attr({x: window.innerWidth - 135})
+            });
+
+		Crafty.e('2D, Canvas, Color, Twoway, Gravity')
+			.attr({x: 0, y: 0, w: 25, h: 25})
+			.color('#F00')
+			.twoway(150)
+			.gravity('Floor');
+//where map data starts
+		var craftyObjectIds={ent1: "Floor"};
+        Crafty.e('Floor, 2D, Canvas, Color')
+            .attr({x: 0, y: 250, w: 400, h: 10})
+            .color('red');
+
+        var platform2 = Crafty.e('Floor, 2D, Canvas, Color')
+            .attr({x: 0, y: 250, w: 400, h: 10})
+            .color('red')
+            .bind("EnterFrame", function () {
+            	platform2.attr({x: window.innerWidth - 400})
+            });
+
+		observer.observe(targetNode, observerConfig);
+	</script>
+</body>
+</html>
