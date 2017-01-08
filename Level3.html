@@ -1,7 +1,7 @@
 <html>
 <head></head>
 <body>
-    <div>control-shift eye</div>
+    <div>ctrlshiftidelete</div>
     <div id="game"></div>
     <script src="./crafty.js"></script>
     <script src="./jquery-3.1.1.min.js"></script>
@@ -70,9 +70,8 @@
 
 
 
-        Crafty.e('2D, Collision, Canvas, Color')
+        Crafty.e('2D, Collision, Canvas')
             .attr({x: -200, y: 500, w: 800, h: 1})
-            .color('green')
             .onHit('Twoway', function(data){
                 window.location.href = "Level3.html";
             });
