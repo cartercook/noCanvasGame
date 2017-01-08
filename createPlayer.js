@@ -1,4 +1,4 @@
-function createPlayer() {
+function createPlayer(xPos, yPos) {
 	Crafty.load({
 	    "sprites": {
 	        // This spritesheet has 8 images, in a 1 by 8 grid
@@ -16,7 +16,7 @@ function createPlayer() {
 	},
 	function() {
 		var player = Crafty.e('2D, Canvas, Twoway, Gravity, player_stand, SpriteAnimation')
-		.attr({x: 0, y: 0, w: 25, h: 25})
+		.attr({x: xPos, y: yPos, w: 25, h: 25})
 		.twoway(150)
 		.gravity('Floor')
 		.reel("player_stand", 1000, [[0, 0]])
