@@ -1,9 +1,11 @@
 <html>
 <head></head>
 <body>
+	<div>the game begins</div>
 	<div id="game"></div>
 	<script src="./crafty.js"></script>
 	<script src="./jquery-3.1.1.min.js"></script>
+	<script src="./createPlayer.js"></script>
 	<script>
 
 		callback = function(records){
@@ -41,6 +43,8 @@
 
 		Crafty.init(500,350, document.getElementById('game'));
 
+		createPlayer();
+
 		Crafty.e('2D, Collision, Canvas, Color')
 			.attr({x: 300, y: 215, w: 35, h: 35})
 			.color('green')
@@ -55,22 +59,14 @@
 				window.location.href = "Level1.html";
 			});
 
-		$('#ent2').css({
-			float:"right",
-			position:"fixed"
+		Crafty.sprite(16, "windowLong.png", {
+    		WindowLong: [0,0,429,243] //x,y,width,height
 		});
 
-
-		Crafty.e('2D, Canvas, Color, Twoway, Gravity')
-			.attr({x: 0, y: 0, w: 25, h: 25})
-			.color('#F00')
-			.twoway(150)
-			.gravity('Floor');
 //where map data starts
 		var craftyObjectIds={ent1: "Floor"};
-        Crafty.e('Floor, 2D, Canvas, Color')
-            .attr({x: 0, y: 250, w: 400, h: 10})
-            .color('red');
+        Crafty.e('Floor, 2D, Canvas, Color, WindowLong')
+            .attr({x: 0, y: 250})
 
 		observer.observe(targetNode, observerConfig);
 	</script>
