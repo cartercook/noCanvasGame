@@ -4,6 +4,7 @@
 	<div id="game">y=225, x=toolow</div>
 	<script src="./crafty.js"></script>
 	<script src="./jquery-3.1.1.min.js"></script>
+	<script src="./createPlayer.js"></script>
 	<script>
 		var idNum = 1;
 		var addStop = 0;
@@ -80,17 +81,7 @@
 				window.location.href = "Level3.html";
 			});
 
-		$('#ent2').css({
-			float:"right",
-			position:"fixed"
-		});
-
-
-		Crafty.e('2D, Canvas, Color, Twoway, Gravity')
-			.attr({x: 0, y: 0, w: 25, h: 25})
-			.color('#F00')
-			.twoway(150)
-			.gravity('Floor');
+			createPlayer();
 //where map data starts
 		var craftyObjectIds={ent3: "Floor"};
         	Crafty.e('Floor, 2D, Canvas, Color')
