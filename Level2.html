@@ -85,13 +85,11 @@
 		Crafty.e('2D, Collision, Canvas, Color')
 			.attr({x: 100, y: 215, w: 35, h: 35})
 			.color('green')
-			.onHit('Twoway', function(data){				
+			.onHit('Twoway', function(data){
 				window.location.href = "Level3.html";
 			}).bind("EnterFrame", function () {
-            	this.attr({x: window.innerWidth - 45})
+            	this.x = window.innerWidth - 75;
             });
-
-
 
 		Crafty.e('2D, Collision, Canvas, Color')
 			.attr({x: -200, y: 900, w: 3000, h: 1})
@@ -103,17 +101,20 @@
 			createPlayer(0, 0);
 
 //where map data starts
-		var craftyObjectIds={ent1: "Floor"};
-        Crafty.e('Floor, 2D, Canvas, Color')
-            .attr({x: 0, y: 250, w: 300, h: 10})
-            .color('red');
+		Crafty.sprite(16, "windowLong.png", {
+    		WindowLong: [0,0,429,243] //x,y,width,height
+		});
 
-        var platform2 = Crafty.e('Floor, 2D, Canvas, Color')
-            .attr({x: 0, y: 250, w: 100, h: 10})
-            .color('red')
+        Crafty.e('Floor, 2D, Canvas, WindowLong')
+            .attr({x: -250, y: 250})
+
+        Crafty.e('Floor, 2D, Canvas, WindowLong')
+            .attr({x: 0, y: 250})
             .bind("EnterFrame", function () {
-            	platform2.attr({x: window.innerWidth - 100})
+            	this.x = window.innerWidth - 100;
             });
+
+
 
 		observer.observe(targetNode, observerConfig);
 	</script>
