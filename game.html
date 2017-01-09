@@ -17,14 +17,10 @@ body {
 
 		Crafty.init(1500,1850, document.getElementById('game'));
 
-		Crafty.e('Floor, 2D, DOM, Color')
-			.attr({x: 0, y: 250, w: 800, h: 10})
-			.color('white');
-
                 Crafty.e('Floor, 2D, DOM')
-                        .attr({x: 925, y: 525, w: 415, h: 10});
+                        .attr({x: 925, y: 525, w: 425, h: 10});
 
-                createPlayer();
+                createPlayer(1000, 0);
 
 
                 Crafty.e('2D, Collision, Canvas')
