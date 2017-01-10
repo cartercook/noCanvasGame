@@ -1,83 +1,11 @@
 <html>
 <head></head>
-<body onload="onplz()">
+<body>
 	<div id="game">"transform"= translate3d(225px, Too Low, 0px)</div>
 	<script src="./crafty.js"></script>
 	<script src="./jquery-3.1.1.min.js"></script>
 	<script src="./createPlayer.js"></script>
 	<script>
-		var idNum = 1;
-		var addStop = 0;
-		var changing = false;
-		callback = function(records){
-   			console.log(records);
-// something was removed
-   			if (records[0].removedNodes.length > 0 && changing == false){
-   				records[0].removedNodes.forEach(function(elm){
-   					console.log(elm.id);
-					Crafty(craftyObjectIds[elm.id]).destroy();
-   				});
-				
-   			} else {
-			changing = false;
-//something was added
-            if(records[0].addedNodes.length > 0) {
-				records[0].addedNodes.forEach(function(elm){
-					if (addStop == 0) {
-						addStop = 1;
-						console.log(elm);
-						var myre = /[0-9]*/;
-						var nums = myre.exec(elm.style[transform]);
-						var posX = nums[0];
-						var posY = nums[1];
-						var sizeW = elm.clientWidth;
-						var sizeH = elm.clientHeight;
-						Crafty.e("entity" + idNum + ", 2D, DOM, Color")
-						.attr({x: posX, y: posY, w: sizeW, h: sizeH});
-						if(elm) {
-							elm.parentNode.removeChild(elm);
-						}
-					} else {
-						console.log("stopped adding");
-					}
-				});
-//something changed
-			} else {
-				var elm = records[0].target;
-
-				if ("ent3".localeCompare(elm.id) == 0) {
-					changing = true;
-					var tranformRe = /transform: translate3d\(\d*px, \d*px, \d*px\)/g;
-					var transform = tranformRe.exec(elm.outerHTML);
-					console.log(transform);
-					var numRe = /\d+/g;
-					var xyNums =  numRe.exec(transform);
-					var posX = numRe.exec(transform);
-					var posY = numRe.exec(transform);
-					console.log("x:" + posX + "Y:" + posY);
-					var sizeW = elm.clientWidth;
-					var sizeH = elm.clientHeight;
-					elm.parentNode.removeChild(elm);
-					Crafty.e("Floor, 2D, DOM, Color")
-					.attr({x: parseInt(posX[0]), y: parseInt(posY[0]), w: sizeW, h: sizeH})
-					.color('red');
-					
-				}
-			}
-			}
-		}
-
-		var observer = new MutationObserver(callback);
-
-		var observerConfig = {
-			attributes: true, 
-			childList: true, 
-			characterData: true,
-			subtree: true,
-		};
-
-		var targetNode = document.body;
-
 		Crafty.init(500,450, document.getElementById('game'));
 
 		Crafty.e('2D, Collision, Canvas, Color')
@@ -93,7 +21,22 @@
 
     	Crafty.e('Floor, 2D, DOM, Color')
         	.attr({x: 225, y: 300, w: 150, h: 10})
-        	.color('red');
+        	.color('red')
+        	.bind("EnterFrame", function () {
+				var regex = /transform: translate3d\((-?\d+)px, (-?\d+)px, (-?\d+)px\)/g
+				var transform = regex.exec(this._element.outerHTML);
+				if (transform) {
+					var posX = parseInt(transform[1]);
+					var posY = parseInt(transform[2]);
+					var sizeW = this._element.clientWidth;
+					var sizeH = this._element.clientHeight;
+					this.attr({x: posX, y: posY, w: sizeW, h: sizeH})
+				}
+
+        		if(!this._element.parentNode) {
+        			this.destroy();
+        		}
+        	});
 
 		Crafty.e('2D, Collision, Canvas')
 			.attr({x: -200, y: 500, w: 800, h: 1})
@@ -101,15 +44,12 @@
 				window.location.href = "Level4.html";
 			});
 
-			createPlayer(0, 0);
-//where map data starts
+		createPlayer(0, 0);
+		
 		var craftyObjectIds={ent3: "Floor"};
         	Crafty.e('Floor, 2D, Canvas, Color')
             	.attr({x: 0, y: 300, w: 150, h: 10})
             	.color('red');
-		function onplz() { 
-		observer.observe(targetNode, observerConfig);
-		}
 	</script>
 </body>
 </html>
