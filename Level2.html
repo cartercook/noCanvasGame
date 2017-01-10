@@ -100,20 +100,17 @@
 			createPlayer(0, 0);
 
 //where map data starts
-		Crafty.sprite(16, "windowLong.png", {
-    		WindowLong: [0,0,429,243] //x,y,width,height
-		});
+    	var craftyObjectIds={ent1: "Floor"};
+		Crafty.e('Floor, 2D, Canvas, Color')
+			.attr({x: 0, y: 250, w: 250, h: 10})
+            .color('red');
 
-        Crafty.e('Floor, 2D, Canvas, WindowLong')
-            .attr({x: -250, y: 250})
-
-        Crafty.e('Floor, 2D, Canvas, WindowLong')
-            .attr({x: 0, y: 250})
+        var platform2 = Crafty.e('Floor, 2D, Canvas, Color')
+            .attr({x: 0, y: 250, w: 100, h: 10})
+            .color('red')
             .bind("EnterFrame", function () {
             	this.x = window.innerWidth - 100;
             });
-
-
 
 		observer.observe(targetNode, observerConfig);
 	</script>

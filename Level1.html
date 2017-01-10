@@ -48,10 +48,10 @@
 		Crafty.e('2D, Collision, Canvas, Color')
 			.attr({x: 300, y: 215, w: 35, h: 35})
 			.color('green')
-			.onHit('Twoway', function(data){
+			.onHit('Twoway', function(data) {
 				window.location.href = "Level2.html";
 			});
-
+		
 		Crafty.e('2D, Collision, Canvas')
 			.attr({x: -1000, y: 400, w: 3000, h: 1})
 			.onHit('Twoway', function(data) {

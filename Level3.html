@@ -7,58 +7,6 @@
     <script src="./jquery-3.1.1.min.js"></script>
     <script src="./createPlayer.js"></script>
     <script>
-        var idNum = 1;
-        var addStop = 0;
-        var IdHitThat = true;
-        callback = function(records){
-            console.log(records);
-// something was removed
-            if (records[0].removedNodes.length > 0){
-                records[0].removedNodes.forEach(function(elm){
-                    console.log(elm.id);
-                    Crafty(craftyObjectIds[elm.id]).destroy();
-                });
-            } else {
-
-//something was added
-            if(records[0].addedNodes.length > 0) {
-                records[0].addedNodes.forEach(function(elm){
-                    if (addStop == 0) {
-                        addStop = 1;
-                        console.log(elm);
-                        var myre = /[0-9]*/;
-                        var nums = myre.exec(elm.style[transform]);
-                        var posX = nums[0];
-                        var posY = nums[1];
-                        var sizeW = elm.clientWidth;
-                        var sizeH = elm.clientHeight;
-                        Crafty.e("entity" + idNum + ", 2D, DOM, Color")
-                        .attr({x: posX, y: posY, w: sizeW, h: sizeH});
-                        if(elm) {
-                            elm.parentNode.removeChild(elm);
-                        }
-                    } else {
-                        console.log("stopped adding");
-                    }
-                });
-//something changed
-            } else {
-                console.log(records[0].target.style["width"]);
-            }
-            }
-        }
-
-        var observer = new MutationObserver(callback);
-
-        var observerConfig = {
-            attributes: true, 
-            childList: true, 
-            characterData: true,
-            subtree: true,
-        };
-
-        var targetNode = document.body;
-
         Crafty.init(500,450, document.getElementById('game'));
 
         Crafty.e('2D, Collision, Canvas, Color')
@@ -74,14 +22,18 @@
                 window.location.href = "Level3.html";
             });
 
-        createPlayer(0, 0);
+        var player = createPlayer(0, 0);
 //where map data starts
         var craftyObjectIds={ent3: "Floor"};
-            Crafty.e('Floor, 2D, DOM, Color')
-                .attr({x: 0, y: 250, w: 400, h: 10})
-                .color('red');
-
-        observer.observe(targetNode, observerConfig);
+        var floor = Crafty.e('Floor, 2D, DOM, Color')
+            .attr({x: 0, y: 250, w: 400, h: 10})
+            .color('red')
+            .bind("EnterFrame", function () {
+        		if(!this._element.parentNode) {
+        			this.destroy();
+        			Crafty('Twoway').get()[0].ay = 500;
+        		}
+        	});
     </script>
 </body>
 </html>
