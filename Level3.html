@@ -1,7 +1,10 @@
 <html>
 <head></head>
 <body>
-    <div>f12 delete the barrier</div>
+	<div style="display:flex; justify-content:space-between;">
+		<div>f12 delete the barrier</div>
+		<div id="clickHere"; style="text-align:right; visibility: hidden;">click here &#10148;</div>
+	</div>
     <div id="game"></div>
     <script src="./crafty.js"></script>
     <script src="./jquery-3.1.1.min.js"></script>
@@ -10,7 +13,7 @@
         Crafty.init(500,450, document.getElementById('game'));
 
         Crafty.e('2D, Collision, Canvas, Color')
-            .attr({x: 100, y: 315, w: 35, h: 35})
+            .attr({x: 183, y: 315, w: 35, h: 35})
             .color('green')
             .onHit('Twoway', function(data){                
                 window.location.href = "Level4.html";
@@ -22,7 +25,7 @@
                 window.location.href = "Level3.html";
             });
 
-        var player = createPlayer(0, 0);
+        var player = createPlayer(183, 0);
 //where map data starts
         var craftyObjectIds={ent3: "Floor"};
         var floor = Crafty.e('Floor, 2D, DOM, Color')
@@ -38,12 +41,19 @@
 					var sizeH = this._element.clientHeight;
 					this.attr({x: posX, y: posY, w: sizeW, h: sizeH})
 				}
-            	
+
         		if(!this._element.parentNode) {
         			this.destroy();
         			Crafty('Twoway').get()[0].ay = 500;
         		}
         	});
+
+        //detect whether devtools were opened
+        window.onresize = function() {
+		    if (window.outerWidth - window.innerWidth > 100) {
+		        document.getElementById('clickHere').style.visibility = "visible";
+		    }
+		}
     </script>
 </body>
 </html>
