@@ -6,24 +6,25 @@ body {
 }
 </style>
 </head>
-<!-- <body onload="plzSveMe()"> -->
 <body>
 	<div id="game"></div>
 	<script src="./crafty.js"></script>
 	<script src="./jquery-3.1.1.min.js"></script>
-        <script src="./createPlayer.js"></script>
+    <script src="./createPlayer.js"></script>
+    <script src="./updateDomChanges.js"></script>
 	<script>
 		Crafty.init(1544,1031, document.getElementById('game'));
 
         Crafty.e('Floor, 2D, DOM')
-                .attr({x: 570, y: 465, w: 480, h: 10});
+            .attr({x: 570, y: 465, w: 480, h: 10})
+            .bind("EnterFrame", updateDomChanges);
 
         createPlayer(820, 50);
 
         Crafty.e('2D, Collision, Canvas')
-            .attr({x: -200, y: 700, w: 8000, h: 1})
+            .attr({x: -1000, y: 700, w: 8000, h: 1})
             .onHit('Twoway', function(data){
-                window.location.href = "game.html";
+                window.location.href = "Level5.html";
             });
 	</script>
 </body>

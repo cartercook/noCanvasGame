@@ -5,6 +5,7 @@
 	<script src="./crafty.js"></script>
 	<script src="./jquery-3.1.1.min.js"></script>
 	<script src="./createPlayer.js"></script>
+	<script src="./updateDomChanges.js"></script>
 	<script>
 		Crafty.init(500,450, document.getElementById('game'));
 
@@ -12,7 +13,7 @@
 			.attr({x: 450, y: 85, w: 35, h: 35})
 			.color('green')
 			.onHit('Twoway', function(data){				
-				window.location.href = "game.html";
+				window.location.href = "Level5.html";
 			});
 
     	Crafty.e('Floor, 2D, Canvas, Color')
@@ -22,30 +23,16 @@
     	Crafty.e('Floor, 2D, DOM, Color')
         	.attr({x: 225, y: 300, w: 150, h: 10})
         	.color('red')
-        	.bind("EnterFrame", function () {
-				var regex = /transform: translate3d\((-?\d+)px, (-?\d+)px, (-?\d+)px\)/g
-				var transform = regex.exec(this._element.outerHTML);
-				if (transform) {
-					var posX = parseInt(transform[1]);
-					var posY = parseInt(transform[2]);
-					var sizeW = this._element.clientWidth;
-					var sizeH = this._element.clientHeight;
-					this.attr({x: posX, y: posY, w: sizeW, h: sizeH})
-				}
-
-        		if(!this._element.parentNode) {
-        			this.destroy();
-        		}
-        	});
+        	.bind("EnterFrame", updateDomChanges);
 
 		Crafty.e('2D, Collision, Canvas')
-			.attr({x: -200, y: 500, w: 800, h: 1})
+			.attr({x: -1000, y: 500, w: 3000, h: 1})
 			.onHit('Twoway', function(data){
 				window.location.href = "Level4.html";
 			});
 
 		createPlayer(0, 0);
-		
+
 		var craftyObjectIds={ent3: "Floor"};
         	Crafty.e('Floor, 2D, Canvas, Color')
             	.attr({x: 0, y: 300, w: 150, h: 10})

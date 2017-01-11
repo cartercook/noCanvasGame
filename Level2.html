@@ -6,74 +6,8 @@
 	<script src="./crafty.js"></script>
 	<script src="./jquery-3.1.1.min.js"></script>
 	<script src="./createPlayer.js"></script>
+	<script src="./updateDomChanges.js"></script>
 	<script>
-		var idNum = 1;
-		var adding = false;
-		var changing = false;
-
-		callback = function(records){
-            console.log("call:");
-            console.log(records);
-// something was removed
-            if (records[0].removedNodes.length > 0){
-                    if (adding == false && changing == false) {
-                    records[0].removedNodes.forEach(function(elm){
-                            console.log("destroyed" + elm.id);
-                            Crafty(craftyObjectIds[elm.id]).destroy();
-                    });
-                    }
-            } else {
-
-//something was added
-            if(records[0].addedNodes.length > 0) {
-                    records[0].addedNodes.forEach(function(elm){
-                            console.log("adding: " + adding);
-                            if (adding == false) {
-                                    adding=true;
-                                    console.log(elm);
-                                    console.log(elm.outerHTML);
-                                    var tranformRe = /transform: translate3d\(\d*px, \d*px, \d*px\)/g;
-                                    var transform = tranformRe.exec(elm.outerHTML);
-			console.log(transform);
-                                    var numRe = /\d+/g;
-                                    var xyNums =  numRe.exec(transform);
-                                    var posX = numRe.exec(transform);
-                                    var posY = numRe.exec(transform);
-			console.log("x:" + posX + "Y:" + posY);
-                                    var sizeW = elm.clientWidth;
-                                    var sizeH = elm.clientHeight;
-                                    console.log(elm.parentNode);
-                                    elm.parentNode.removeChild(elm);
-                                    Crafty.e("entity" + idNum + ", 2D, DOM, Color")
-                                    .attr({x: posX, y: posY, w: sizeW, h: sizeH})
-			.color('red');
-                                    adding = false;
-                            } else {
-                                    console.log("stopped adding");
-                                    console.log("changing: " + changing);
-                                    if (changing == false) {
-                                            changing=true;
-                                            changing=false;
-                                    }
-                            }
-                    });
-//something changed
-            } else {
-                    console.log(records[0].target.style["width"]);
-            }
-            }
-        };
-		var observer = new MutationObserver(callback);
-
-		var observerConfig = {
-			attributes: true, 
-			childList: true, 
-			characterData: true,
-			subtree: true,
-		};
-
-		var targetNode = document.body;
-
 		Crafty.init(screen.width, screen.height, document.getElementById('game'));
 
 		// resize the canvas to fill browser window dynamically
@@ -82,7 +16,7 @@
 			height:"100%"
 		})
 
-		Crafty.e('2D, Collision, Canvas, Color')
+		Crafty.e('2D, Collision, DOM, Color')
 			.attr({x: 100, y: 215, w: 35, h: 35})
 			.color('green')
 			.onHit('Twoway', function(data){
@@ -93,26 +27,25 @@
 
 		Crafty.e('2D, Collision, Canvas')
 			.attr({x: -1000, y: 900, w: 3000, h: 1})
-			.onHit('Twoway', function(data){
+			.onHit('Twoway', function(data) {
 				window.location.href = "Level2.html";
 			});
 
-			createPlayer(0, 0);
+		createPlayer(0, 0, true);
 
 //where map data starts
     	var craftyObjectIds={ent1: "Floor"};
-		Crafty.e('Floor, 2D, Canvas, Color')
+		Crafty.e('Floor, 2D, DOM, Color')
 			.attr({x: 0, y: 250, w: 250, h: 10})
-            .color('red');
+            .color('red')
+            .bind("EnterFrame", updateDomChanges);
 
-        var platform2 = Crafty.e('Floor, 2D, Canvas, Color')
+        var platform2 = Crafty.e('Floor, 2D, DOM, Color')
             .attr({x: 0, y: 250, w: 100, h: 10})
             .color('red')
             .bind("EnterFrame", function () {
             	this.x = window.innerWidth - 100;
             });
-
-		observer.observe(targetNode, observerConfig);
 	</script>
 </body>
 </html>

@@ -9,23 +9,26 @@
     <script src="./crafty.js"></script>
     <script src="./jquery-3.1.1.min.js"></script>
     <script src="./createPlayer.js"></script>
+    <script src="./updateDomChanges.js"></script>
     <script>
         Crafty.init(500,450, document.getElementById('game'));
 
-        Crafty.e('2D, Collision, Canvas, Color')
+        Crafty.e('2D, Collision, DOM, Color')
             .attr({x: 183, y: 315, w: 35, h: 35})
             .color('green')
             .onHit('Twoway', function(data){                
                 window.location.href = "Level4.html";
-            });
+            })
+            .bind("EnterFrame", updateDomChanges);
 
         Crafty.e('2D, Collision, Canvas')
             .attr({x: -1000, y: 500, w: 4000, h: 1})
             .onHit('Twoway', function(data){
                 window.location.href = "Level3.html";
-            });
+            })
 
-        var player = createPlayer(183, 0);
+        var player = createPlayer(183, 0, true);
+        
 //where map data starts
         var craftyObjectIds={ent3: "Floor"};
         var floor = Crafty.e('Floor, 2D, DOM, Color')
