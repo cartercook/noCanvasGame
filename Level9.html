@@ -1,0 +1,94 @@
+<html>
+<head></head>
+<body>
+	<div id="game">the "gonna want to full screen this one, look through the elements" level</div>
+	<script src="./crafty.js"></script>
+	<script src="./jquery-3.1.1.min.js"></script>
+	<script src="./globaljs.js"></script>
+	<script src="./updateDomChanges.js"></script>
+	<script>
+		Crafty.init(1440,1080, document.getElementById('game'));
+
+        Data = null;
+
+		Crafty.e('2D, Collision, Canvas, Color')
+			.attr({x: 515, y: 215, w: 35, h: 35})
+			.color('green')
+			.onHit('Twoway', function(data){
+                gate("Level10.html");
+			});
+
+        //start
+        Crafty.e('Floor, 2D, Canvas, Color')
+            .attr({x: 0, y: 200, w: 50, h: 10})
+            .color('red');
+
+        //first blocking invis floor
+        Crafty.e('Floor, 2D, DOM, Color')
+            .attr({x: 50, y: 200, w: 50, h: 10})
+            .color('white');
+
+        //first visible jump platform
+        Crafty.e('Floor, 2D, Canvas, Color')
+            .attr({x: 100, y: 150, w: 100, h: 10})
+            .color('red');
+
+
+        //2nd visible jump platform
+        Crafty.e('Floor, 2D, Canvas, Color')
+            .attr({x: 300, y: 250, w: 125, h: 10})
+            .color('red');
+
+        //first blocking invis wall
+        Crafty.e('2D, Collision, DOM, Color')
+            .attr({x: 490, y: -100, w: 10, h: 350})
+            .color('white')
+            .onHit('Twoway', function(data){
+                Data = data;
+                console.log(data);
+            });
+
+        //final exit platform
+        Crafty.e('Floor, 2D, Canvas, Color')
+            .attr({x: 500, y: 250, w: 100, h: 10})
+            .color('red');
+
+        //main invis floor 
+        Crafty.e('Floor, 2D, DOM, Color')
+            .attr({x: 50, y: 500, w: 400, h: 10})
+            .color('white');
+
+        //2nd floor underneth
+        Crafty.e('Floor, 2D, DOM, Color')
+            .attr({x: 100, y: 300, w: 100, h: 10})
+            .color('white');
+
+        //invis portal entrance
+        Crafty.e('2D, Collision, DOM, Color')
+            .attr({x: 40, y: 240, w: 50, h: 50})
+            .color('white')
+            .onHit('Twoway', function(data){
+                killfloor("Level9.html");
+            });
+
+        //invis portal exit
+        Crafty.e('2D, Collision, DOM, Color')
+            .attr({x: 515, y: 175, w: 35, h: 35})
+            .color('white')
+            .onHit('Twoway', function(data){
+                killfloor("Level9.html");
+            });
+
+        //kill floor
+		Crafty.e('2D, Collision, Canvas')
+			.attr({x: -1000, y: 750, w: 3000, h: 1})
+			.onHit('Twoway', function(data){
+                killfloor("Level9.html");
+			});
+
+		createPlayer(0, 150);
+
+
+	</script>
+</body>
+</html>

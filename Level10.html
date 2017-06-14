@@ -1,0 +1,81 @@
+<html>
+<head></head>
+<body>
+	<div id="game">the "use events / methods to change locations" level</div>
+	<script src="./crafty.js"></script>
+	<script src="./jquery-3.1.1.min.js"></script>
+	<script src="./globaljs.js"></script>
+	<script src="./updateDomChanges.js"></script>
+	<script>
+		Crafty.init(800,650, document.getElementById('game'));
+
+		//exit
+		Crafty.e('2D, Collision, Canvas, Color')
+			.attr({x: 650, y: 210, w: 40, h: 40})
+			.color('green')
+			.onHit('Twoway', function(data){
+                gate("Level10.html");
+			});
+
+		// Event horizon
+        Crafty.e('2D, Collision, Canvas, Color')
+            .attr({x: 230, y: 275, w: 200, h: 3})
+            .color('black')
+            .onHit('Twoway', function(data) {
+                killfloor("Level10.html");
+            });
+
+        //portal exit
+		Crafty.e('2D, Collision, Canvas, Color')
+            .attr({x: 325, y: 150, w: 20, h: 20})
+            .color('blue')
+            .onHit('Twoway', function(data) {
+                killfloor("Level10.html");
+            });
+
+        //wall 1
+		Crafty.e('2D, Collision, Canvas, Color')
+            .attr({x: 220, y: 150, w: 10, h: 200})
+            .color('red')
+            .onHit('Twoway', function(data) {
+                killfloor("Level10.html");
+            });
+
+        //wall 2
+		Crafty.e('2D, Collision, Canvas, Color')
+            .attr({x: 420, y: 150, w: 10, h: 200})
+            .color('red')
+            .onHit('Twoway', function(data) {
+                killfloor("Level10.html");
+            });
+
+        //other platform, with exit
+    	Crafty.e('Floor, 2D, Canvas, Color')
+        	.attr({x: 550, y: 250, w: 150, h: 10})
+        	.color('red');
+
+        //portal entrance
+        Crafty.e('2D, Collision, Canvas, Color')
+            .attr({x: 160, y: 350, w: 20, h: 20})
+            .color('black')
+            .onHit('Twoway', function(data) {
+                killfloor("Level10.html");
+            });
+
+        // floor you land on
+    	Crafty.e('Floor, 2D, Canvas, Color')
+        	.attr({x: 20, y: 250, w: 100, h: 10})
+        	.color('red');
+
+       	//invisible wall of death
+		Crafty.e('2D, Collision, Canvas')
+			.attr({x: -1000, y: 900, w: 3000, h: 1})
+			.onHit('Twoway', function(data){
+                killfloor("Level10.html");
+			});
+
+		//-_-
+		createPlayer(10, 100);
+	</script>
+</body>
+</html>

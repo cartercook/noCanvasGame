@@ -1,0 +1,78 @@
+<html>
+<head></head>
+<body>
+	<div id="game">the "press button to activate method on elements" level</div>
+	<script src="./crafty.js"></script>
+	<script src="./jquery-3.1.1.min.js"></script>
+	<script src="./globaljs.js"></script>
+	<script src="./updateDomChanges.js"></script>
+	<script>
+		Crafty.init(800,650, document.getElementById('game'));
+
+		//exit
+		Crafty.e('2D, Collision, Canvas, Color')
+			.attr({x: 450, y: 210, w: 40, h: 40})
+			.color('green')
+			.onHit('Twoway', function(data){
+                gate("Level7.html");
+			});
+
+		//portal gate
+		Crafty.e('2D, Collision, Canvas, Color')
+            .attr({x: 460, y: 75, w: 20, h: 20})
+            .color('blue')
+            .onHit('Twoway', function(data) {
+                killfloor("Level6.html");
+            });
+
+        //button
+		Crafty.e('2D, Collision, DOM, Color')
+            .attr({x: 130, y: 495, w: 10, h: 5})
+            .color('orange')
+            .onHit('Twoway', function(data) {
+                alert("button hit");
+            });
+        //ent3
+
+
+        //other platform, with exit
+    	Crafty.e('Floor, 2D, Canvas, Color')
+        	.attr({x: 400, y: 250, w: 150, h: 10})
+        	.color('red');
+
+        //test/origin object
+        var testBox = Crafty.e('2D, Collision, Gravity, Canvas, Color')
+            .attr({x: 40, y: 210, w: 20, h: 20})
+            .color('black')
+            .gravity('floor')
+            .onHit('Twoway', function(data) {
+                this.antigravity();
+            });
+        //ent 5
+
+
+        // floor above you
+    	Crafty.e('Floor, 2D, Canvas, Color')
+        	.attr({x: 20, y: 250, w: 150, h: 10})
+        	.color('red');
+
+       	//invisible wall of death
+		Crafty.e('2D, Collision, Canvas')
+			.attr({x: -1000, y: 900, w: 3000, h: 1})
+			.onHit('Twoway', function(data){
+                killfloor("Level6.html");
+			});
+
+		//-_-
+		createPlayer(10, 315);
+        //ent9
+        
+
+		//floor player lands on
+		var craftyObjectIds={ent3: "Floor"};
+    	Crafty.e('Floor, 2D, Canvas, Color')
+        	.attr({x: 0, y: 500, w: 150, h: 10})
+        	.color('red');
+	</script>
+</body>
+</html>

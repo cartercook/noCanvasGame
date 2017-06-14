@@ -1,11 +1,11 @@
 <html>
 <head></head>
 <body>
-    <div>distance is relative, and resizable. think outside the [browser].</div>
+    <div>The "im paranoid this concept will not get throught to people so I made a 2nd tutorial level that shows you that you need to resize the browser" level</div>
 	<div id="game"></div>
 	<script src="./crafty.js"></script>
 	<script src="./jquery-3.1.1.min.js"></script>
-	<script src="./createPlayer.js"></script>
+	<script src="./globaljs.js"></script>
 	<script src="./updateDomChanges.js"></script>
 	<script>
 		Crafty.init(screen.width, screen.height, document.getElementById('game'));
@@ -20,7 +20,7 @@
 			.attr({x: 100, y: 215, w: 35, h: 35})
 			.color('green')
 			.onHit('Twoway', function(data){
-				window.location.href = "Level3.html";
+                gate("Level3.html");
 			}).bind("EnterFrame", function () {
             	this.x = window.innerWidth - 75;
             });
@@ -28,7 +28,7 @@
 		Crafty.e('2D, Collision, Canvas')
 			.attr({x: -1000, y: 900, w: 3000, h: 1})
 			.onHit('Twoway', function(data) {
-				window.location.href = "Level2.html";
+                killfloor("Level2.html");
 			});
 
 		createPlayer(0, 0, true);

@@ -2,13 +2,13 @@
 <head></head>
 <body>
 	<div style="display:flex; justify-content:space-between;">
-		<div>f12 delete the barrier</div>
+		<div>the "this barrier is impassible unless you delete it in the dev console" level</div>
 		<div id="clickHere"; style="text-align:right; visibility: hidden;">click here &#10148;</div>
 	</div>
     <div id="game"></div>
     <script src="./crafty.js"></script>
     <script src="./jquery-3.1.1.min.js"></script>
-    <script src="./createPlayer.js"></script>
+    <script src="./globaljs.js"></script>
     <script src="./updateDomChanges.js"></script>
     <script>
         Crafty.init(500,450, document.getElementById('game'));
@@ -16,15 +16,15 @@
         Crafty.e('2D, Collision, DOM, Color')
             .attr({x: 183, y: 315, w: 35, h: 35})
             .color('green')
-            .onHit('Twoway', function(data){                
-                window.location.href = "Level4.html";
+            .onHit('Twoway', function(data){
+                gate("Level4.html");
             })
             .bind("EnterFrame", updateDomChanges);
 
         Crafty.e('2D, Collision, Canvas')
             .attr({x: -1000, y: 500, w: 4000, h: 1})
             .onHit('Twoway', function(data){
-                window.location.href = "Level3.html";
+                killfloor("Level3.html");
             })
 
         var player = createPlayer(183, 0, true);

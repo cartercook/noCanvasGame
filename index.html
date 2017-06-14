@@ -1,11 +1,11 @@
 <html>
 <head></head>
 <body>
-	<div>the game begins</div>
+	<div>The "tutorial" level</div>
 	<div id="game"></div>
 	<script src="./crafty.js"></script>
 	<script src="./jquery-3.1.1.min.js"></script>
-	<script src="./createPlayer.js"></script>
+	<script src="./globaljs.js"></script>
 	<script src="./updateDomChanges.js"></script>
 	<script>
 		Crafty.init(500,350, document.getElementById('game'));
@@ -16,14 +16,14 @@
 			.attr({x: 300, y: 215, w: 35, h: 35})
 			.color('green')
 			.onHit('Twoway', function(data) {
-				window.location.href = "Level2.html";
+                gate("Level2.html");
 			})
 			.bind("EnterFrame", updateDomChanges);
 		
 		Crafty.e('2D, Collision, Canvas')
 			.attr({x: -1000, y: 400, w: 3000, h: 1})
 			.onHit('Twoway', function(data) {
-				window.location.href = "index.html";
+                killfloor("index.html");
 			});
 
 //where map data starts
