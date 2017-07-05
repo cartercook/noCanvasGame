@@ -1,78 +1,92 @@
 <html>
 <head></head>
 <body>
-	<div id="game">the "press button to activate method on elements" level</div>
-	<script src="./crafty.js"></script>
-	<script src="./jquery-3.1.1.min.js"></script>
-	<script src="./globaljs.js"></script>
-	<script src="./updateDomChanges.js"></script>
-	<script>
-		Crafty.init(800,650, document.getElementById('game'));
-
-		//exit
-		Crafty.e('2D, Collision, Canvas, Color')
-			.attr({x: 450, y: 210, w: 40, h: 40})
-			.color('green')
-			.onHit('Twoway', function(data){
+    <div id="game">the "press button to activate method on elements" level</div>
+    <div style="display:inline; border-right: 0px;">ref_ent=</div>
+    <div style="display:inline; border-left: 0px;" id="reference_entitiy_holder">5</div>
+    <!-- Entity numbers are created in the order objects are draw. for example the black box is the 5th object drawn and the player is the 9th. -->
+    <script src="./crafty.js"></script>
+    <script src="./jquery-3.1.1.min.js"></script>
+    <script src="./globaljs.js"></script>
+    <script src="./updateDomChanges.js"></script>
+    <script>
+        Crafty.init(800,650, document.getElementById('game'));
+ 
+        //exit
+        Crafty.e('2D, Collision, Canvas, Color')
+            .attr({x: 490, y: 210, w: 40, h: 40})
+            .color('green')
+            .onHit('Twoway', function(data){
                 gate("Level7.html");
-			});
-
-		//portal gate
-		Crafty.e('2D, Collision, Canvas, Color')
-            .attr({x: 460, y: 75, w: 20, h: 20})
-            .color('blue')
-            .onHit('Twoway', function(data) {
-                killfloor("Level6.html");
             });
-
+ 
+        //portal gate
+        Crafty.e('2D, Canvas, Color')
+            .attr({x: 460, y: 75, w: 20, h: 20})
+            .color('blue');
+ 
         //button
-		Crafty.e('2D, Collision, DOM, Color')
+        var button_locked = false;
+        Crafty.e('2D, Collision, Canvas, Color')
             .attr({x: 130, y: 495, w: 10, h: 5})
             .color('orange')
             .onHit('Twoway', function(data) {
-                alert("button hit");
-            });
+                if(!button_locked){
+                    var used_int = parseInt(document.getElementById("reference_entitiy_holder").innerHTML);
+                    Crafty(used_int).attr({x: 460, y: 75}).gravity();
+                    this.attr({y:498, h: 2}).color('#9E4B1C');
+                    button_locked = true;
+                    window.setTimeout(timed_unlock, 1000);
+                }
+        });
         //ent3
-
-
+ 
+        function timed_unlock(){
+            Crafty(3).attr({y:495, h: 5}).color('orange');
+            button_locked = false;
+        }
+ 
         //other platform, with exit
-    	Crafty.e('Floor, 2D, Canvas, Color')
-        	.attr({x: 400, y: 250, w: 150, h: 10})
-        	.color('red');
-
+        Crafty.e('Floor, 2D, Canvas, Color')
+            .attr({x: 400, y: 250, w: 150, h: 10})
+            .color('red');
+ 
         //test/origin object
-        var testBox = Crafty.e('2D, Collision, Gravity, Canvas, Color')
+        Crafty.e('2D, Collision, Gravity, Canvas, Color')
             .attr({x: 40, y: 210, w: 20, h: 20})
             .color('black')
-            .gravity('floor')
-            .onHit('Twoway', function(data) {
+            .gravity('Floor')
+            .onHit('Floor', function(data) {
                 this.antigravity();
+                this.move('n', '5');
             });
         //ent 5
-
-
+ 
         // floor above you
-    	Crafty.e('Floor, 2D, Canvas, Color')
-        	.attr({x: 20, y: 250, w: 150, h: 10})
-        	.color('red');
-
-       	//invisible wall of death
-		Crafty.e('2D, Collision, Canvas')
-			.attr({x: -1000, y: 900, w: 3000, h: 1})
-			.onHit('Twoway', function(data){
-                killfloor("Level6.html");
-			});
-
-		//-_-
-		createPlayer(10, 315);
-        //ent9
-        
-
-		//floor player lands on
-		var craftyObjectIds={ent3: "Floor"};
-    	Crafty.e('Floor, 2D, Canvas, Color')
-        	.attr({x: 0, y: 500, w: 150, h: 10})
-        	.color('red');
-	</script>
+        Crafty.e('Floor, 2D, Canvas, Color')
+            .attr({x: 20, y: 250, w: 150, h: 10})
+            .color('red');
+ 
+        var run = true;
+ 
+        //invisible wall of death
+        Crafty.e('Floor, 2D, Collision, Canvas')
+            .attr({x: -1000, y: 900, w: 3000, h: 1})
+            .onHit('Twoway', function(data){
+                if(run){
+                    killfloor("Level6.html");
+                    run = false;
+                }
+            });
+ 
+        //-_-
+        createPlayer(10, 315);
+        //ent9        
+ 
+        //floor player lands on
+        Crafty.e('Floor, 2D, Canvas, Color')
+            .attr({x: 0, y: 500, w: 150, h: 10})
+            .color('red');
+    </script>
 </body>
 </html>

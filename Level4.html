@@ -1,42 +1,47 @@
 <html>
 <head></head>
 <body>
-	<div id="game">the "move the platforms" level</div>
-	<script src="./crafty.js"></script>
-	<script src="./jquery-3.1.1.min.js"></script>
-	<script src="./globaljs.js"></script>
-	<script src="./updateDomChanges.js"></script>
-	<script>
-		Crafty.init(500,450, document.getElementById('game'));
-
-		Crafty.e('2D, Collision, Canvas, Color')
-			.attr({x: 450, y: 85, w: 35, h: 35})
-			.color('green')
-			.onHit('Twoway', function(data){
-                gate("Level5.html");
-			});
-
-    	Crafty.e('Floor, 2D, Canvas, Color')
-        	.attr({x: 400, y: 120, w: 100, h: 10})
-        	.color('red');
-
-    	Crafty.e('Floor, 2D, DOM, Color')
-        	.attr({x: 225, y: 300, w: 150, h: 10})
-        	.color('red')
-        	.bind("EnterFrame", updateDomChanges);
-
-		Crafty.e('2D, Collision, Canvas')
-			.attr({x: -1000, y: 500, w: 3000, h: 1})
-			.onHit('Twoway', function(data){
-                killfloor("Level4.html");
-			});
-
-		createPlayer(0, 0);
-
-		var craftyObjectIds={ent3: "Floor"};
-        	Crafty.e('Floor, 2D, Canvas, Color')
-            	.attr({x: 0, y: 300, w: 150, h: 10})
-            	.color('red');
-	</script>
+    <div id="game">the "move the platforms" level</div>
+    <script src="./crafty.js"></script>
+    <script src="./jquery-3.1.1.min.js"></script>
+    <script src="./globaljs.js"></script>
+    <script src="./updateDomChanges.js"></script>
+    <script>
+        Crafty.init(500,450, document.getElementById('game'));
+ 
+        Crafty.e('2D, Collision, Canvas, Color')
+            .attr({x: 450, y: 85, w: 35, h: 35})
+            .color('green')
+            .onHit('Twoway', function(data){
+                gate("Level6.html");
+            });
+ 
+        Crafty.e('Floor, 2D, Canvas, Color')
+            .attr({x: 400, y: 120, w: 100, h: 10})
+            .color('red');
+ 
+        Crafty.e('Floor, 2D, DOM, Color')
+            .attr({x: 225, y: 300, w: 150, h: 10})
+            .color('red')
+            .bind("EnterFrame", updateDomChanges);
+ 
+        var run = true;
+ 
+        Crafty.e('2D, Collision, Canvas')
+            .attr({x: -1000, y: 500, w: 3000, h: 1})
+            .onHit('Twoway', function(data){
+                if(run){
+                    killfloor("Level4.html");
+                    run = false;
+                }
+            });
+ 
+        createPlayer(0, 0);
+ 
+        var craftyObjectIds={ent3: "Floor"};
+            Crafty.e('Floor, 2D, Canvas, Color')
+                .attr({x: 0, y: 300, w: 150, h: 10})
+                .color('red');
+    </script>
 </body>
 </html>

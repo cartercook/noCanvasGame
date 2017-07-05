@@ -1,10 +1,10 @@
 <html>
 <head></head>
 <body>
-	<div style="display:flex; justify-content:space-between;">
-		<div>the "this barrier is impassible unless you delete it in the dev console" level</div>
-		<div id="clickHere"; style="text-align:right; visibility: hidden;">click here &#10148;</div>
-	</div>
+    <div style="display:flex; justify-content:space-between;">
+        <div>the "this barrier is impassable unless you delete it in the dev console" level</div>
+        <div id="clickHere"; style="text-align:right; visibility: hidden;">click here &#10148;</div>
+    </div>
     <div id="game"></div>
     <script src="./crafty.js"></script>
     <script src="./jquery-3.1.1.min.js"></script>
@@ -12,51 +12,69 @@
     <script src="./updateDomChanges.js"></script>
     <script>
         Crafty.init(500,450, document.getElementById('game'));
-
-        Crafty.e('2D, Collision, DOM, Color')
-            .attr({x: 183, y: 315, w: 35, h: 35})
+ 
+        Crafty.e('2D, Collision, Canvas, Color')
+            .attr({x: 300, y: 215, w: 35, h: 35})
             .color('green')
             .onHit('Twoway', function(data){
-                gate("Level4.html");
+                if(run){
+                    gate("level4.html");
+                    run = false;
+                }
             })
             .bind("EnterFrame", updateDomChanges);
-
+ 
+        var run = true;
+ 
         Crafty.e('2D, Collision, Canvas')
             .attr({x: -1000, y: 500, w: 4000, h: 1})
             .onHit('Twoway', function(data){
-                killfloor("Level3.html");
-            })
+                if(run){
+                    killfloor("Level3.html");
+                    run = false;
+                }
+            });
+ 
+        var player = createPlayer(105, 0);
 
-        var player = createPlayer(183, 0, true);
-        
-//where map data starts
-        var craftyObjectIds={ent3: "Floor"};
-        var floor = Crafty.e('Floor, 2D, DOM, Color')
+        Crafty.e('Floor, 2D, Canvas, Color')
             .attr({x: 0, y: 250, w: 400, h: 10})
+            .color('red');
+        
+        //where map data starts
+        Crafty.e('2D, DOM, Color, Collision, Wall')
+            .attr({x: 250, y: -150, w: 15, h: 400})
             .color('red')
+            .onHit('Twoway', function(data){
+                Crafty('Twoway').x -= 3;
+            });
+
+        
+        Crafty("Wall")
             .bind("EnterFrame", function () {
-				var regex = /transform: translate3d\((-?\d+)px, (-?\d+)px, (-?\d+)px\)/g
-				var transform = regex.exec(this._element.outerHTML);
-				if (transform) {
-					var posX = parseInt(transform[1]);
-					var posY = parseInt(transform[2]);
-					var sizeW = this._element.clientWidth;
-					var sizeH = this._element.clientHeight;
-					this.attr({x: posX, y: posY, w: sizeW, h: sizeH})
-				}
-
-        		if(!this._element.parentNode) {
-        			this.destroy();
-        			Crafty('Twoway').get()[0].ay = 500;
-        		}
-        	});
-
+                var regex = /transform: translate3d\((-?\d+)px, (-?\d+)px, (-?\d+)px\)/g
+                var transform = regex.exec(this._element.outerHTML);
+                if (transform) {
+                    var posX = parseInt(transform[1]);
+                    var posY = parseInt(transform[2]);
+                    var sizeW = this._element.clientWidth;
+                    var sizeH = this._element.clientHeight;
+                    this.attr({x: posX, y: posY, w: sizeW, h: sizeH})
+                }
+ 
+                if(!this._element.parentNode) {
+                    this.destroy();
+                }
+            });
+ 
         //detect whether devtools were opened
         window.onresize = function() {
-		    if (window.outerWidth - window.innerWidth > 100) {
-		        document.getElementById('clickHere').style.visibility = "visible";
-		    }
-		}
+            if (window.outerWidth - window.innerWidth > 100) {
+                document.getElementById('clickHere').style.visibility = "visible";
+            }
+        }
     </script>
 </body>
 </html>
+ 
+ 

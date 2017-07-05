@@ -1,7 +1,8 @@
 <html>
 <head></head>
 <body>
-	<div id="game">the "Adjustable portal tejectories level" level</div>
+	<div id="game">the "Adjustable portal trajectories level" level</div>
+	<div id="trajectories_holder" class="0 0"></div>
 	<script src="./crafty.js"></script>
 	<script src="./jquery-3.1.1.min.js"></script>
 	<script src="./globaljs.js"></script>
@@ -20,10 +21,7 @@
 		//portal gate
 		Crafty.e('2D, Collision, Canvas, Color')
             .attr({x: 420, y: 150, w: 20, h: 20})
-            .color('blue')
-            .onHit('Twoway', function(data) {
-                killfloor("Level7.html");
-            });
+            .color('blue');
 
         //other platform, with exit
     	Crafty.e('Floor, 2D, Canvas, Color')
@@ -33,21 +31,30 @@
         //portal entrance
         Crafty.e('2D, Collision, Canvas, Color')
             .attr({x: 250, y: 350, w: 20, h: 20})
-            .color('black')
+            .color('yellow')
             .onHit('Twoway', function(data) {
-                killfloor("Level7.html");
+            	Crafty('Twoway').attr({x: 420, y: 150, w: 20, h: 20});
+            	var xy = document.getElementById("trajectories_holder").className.split(" ");
+            	console.log(xy);            	
+            	Crafty('Twoway').vx += parseInt(xy[0]);
+            	Crafty('Twoway').vy += parseInt(xy[1]);
             });
 
         // floor above you
     	Crafty.e('Floor, 2D, Canvas, Color')
         	.attr({x: 20, y: 250, w: 150, h: 10})
         	.color('red');
+ 
+        var run = true;
 
        	//invisible wall of death
 		Crafty.e('2D, Collision, Canvas')
 			.attr({x: -1000, y: 900, w: 3000, h: 1})
 			.onHit('Twoway', function(data){
-                killfloor("Level7.html");
+                if(run){
+                    killfloor("Level7.html");
+                    run = false;
+                }
 			});
 
 		//-_-

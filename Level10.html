@@ -1,81 +1,139 @@
 <html>
 <head></head>
 <body>
-	<div id="game">the "use events / methods to change locations" level</div>
-	<script src="./crafty.js"></script>
-	<script src="./jquery-3.1.1.min.js"></script>
-	<script src="./globaljs.js"></script>
-	<script src="./updateDomChanges.js"></script>
-	<script>
-		Crafty.init(800,650, document.getElementById('game'));
-
-		//exit
-		Crafty.e('2D, Collision, Canvas, Color')
-			.attr({x: 650, y: 210, w: 40, h: 40})
-			.color('green')
-			.onHit('Twoway', function(data){
+    <div id="game">the "i was to lazy to code this level, so you get to do it" level</div>
+    <div id="event_trigger" 
+    syntax="(entity reference, new x, new y) 
+    //separate with ;
+    //Relevant entity syntax: Twoway, Exit, Entrance, Floor" 
+    description="All entities that fit the 'reference entity's criteria will be moved to the new x/new y location. you can move things as many things, as many times as you want.">begin;;end</div>
+    <script src="./crafty.js"></script>
+    <script src="./jquery-3.1.1.min.js"></script>
+    <script src="./globaljs.js"></script>
+    <script src="./updateDomChanges.js"></script>
+    <script>
+        Crafty.init(800,650, document.getElementById('game'));
+ 
+        //exit
+        Crafty.e('2D, Collision, Canvas, Color')
+            .attr({x: 650, y: 210, w: 40, h: 40})
+            .color('green')
+            .onHit('Twoway', function(data){
                 gate("Level10.html");
-			});
-
-		// Event horizon
+            });
+        
+        var run = true;
+        // Event horizon
         Crafty.e('2D, Collision, Canvas, Color')
             .attr({x: 230, y: 275, w: 200, h: 3})
             .color('black')
             .onHit('Twoway', function(data) {
-                killfloor("Level10.html");
+                if(run){
+                    var code = document.getElementById("event_trigger").innerHTML.split(";");
+                    if(code[0].trim()=="begin" && code[code.length-1].trim()=="end"){
+                        //console.log(code);
+                        for (var point in code){
+                            var line = code[point];
+                            //console.log(line);
+                            if(line.trim()[0] == '(' && line.trim()[line.trim().length-1] == ')'){
+                                var variables = line.trim().split(",");
+                                console.log(variables);
+                                if(variables.length == 3){
+                                    var ent = variables[0].trim().replace('(', '');
+                                    var x_cord = parseInt(variables[1].trim());
+                                    var y_cord = parseInt(variables[2].trim().replace(')',''));
+                                    //console.log(ent);
+                                    //console.log(Crafty(ent));
+                                    Crafty(ent).x = x_cord;
+                                    Crafty(ent).y = y_cord;
+                                }else{
+                                    document.getElementById("event_trigger").innerHTML += "<br> Error:  section " + point + ": incompatible number of variables found";
+                                    return;
+                                    run = false;
+                                }
+                            }else if (line.trim()[line.trim().length-1] == ')') {
+                                document.getElementById("event_trigger").innerHTML += "<br> Error: section " + point + ": expected '('";
+                                return;
+                                run = false;
+                            }else if (line.trim()[0] == '(') {
+                                document.getElementById("event_trigger").innerHTML += "<br> Error: section " + point + ": expected ')'";
+                                return;
+                                run = false;
+                            }else if(line.trim() == "begin" || line.trim() == "end"){
+                            }else{
+                                document.getElementById("event_trigger").innerHTML += "<br> Error: section " + point + ": incompatible or incomplete code";
+                                return;
+                                run = false;
+                            }
+                        }
+                    }else if (code[0].trim()=="begin"){
+                        document.getElementById("event_trigger").innerHTML += "<br> Error: expected 'end'";
+                        return;
+                        run = false;
+                    }else if (code[code.length-1].trim()=="end"){
+                        document.getElementById("event_trigger").innerHTML += "<br> Error: expected 'begin'";
+                        return;
+                        run = false;
+                    }else{
+                        document.getElementById("event_trigger").innerHTML += "<br> Error: Unexpected exception";
+                        return;
+                        run = false;
+                    }
+                }
             });
-
+ 
         //portal exit
-		Crafty.e('2D, Collision, Canvas, Color')
+        Crafty.e('2D, Collision, Canvas, Color, Exit, Portal')
             .attr({x: 325, y: 150, w: 20, h: 20})
-            .color('blue')
-            .onHit('Twoway', function(data) {
-                killfloor("Level10.html");
-            });
-
+            .color('blue');
+ 
         //wall 1
-		Crafty.e('2D, Collision, Canvas, Color')
-            .attr({x: 220, y: 150, w: 10, h: 200})
-            .color('red')
-            .onHit('Twoway', function(data) {
-                killfloor("Level10.html");
-            });
-
-        //wall 2
-		Crafty.e('2D, Collision, Canvas, Color')
-            .attr({x: 420, y: 150, w: 10, h: 200})
-            .color('red')
-            .onHit('Twoway', function(data) {
-                killfloor("Level10.html");
-            });
-
-        //other platform, with exit
-    	Crafty.e('Floor, 2D, Canvas, Color')
-        	.attr({x: 550, y: 250, w: 150, h: 10})
-        	.color('red');
-
-        //portal entrance
         Crafty.e('2D, Collision, Canvas, Color')
-            .attr({x: 160, y: 350, w: 20, h: 20})
-            .color('black')
+            .attr({x: 220, y: 50, w: 10, h: 300})
+            .color('red')
             .onHit('Twoway', function(data) {
-                killfloor("Level10.html");
+                Crafty('Twoway').x -= 3;
             });
-
+ 
+        //wall 2
+        Crafty.e('2D, Collision, Canvas, Color')
+            .attr({x: 420, y: 50, w: 10, h: 300})
+            .color('red')
+            .onHit('Twoway', function(data) {
+                Crafty('Twoway').x -= 3;
+            });
+ 
+        //other platform, with exit
+        Crafty.e('Floor, 2D, Canvas, Color')
+            .attr({x: 550, y: 250, w: 150, h: 10})
+            .color('red');
+ 
+        //portal entrance
+        Crafty.e('2D, Collision, Canvas, Color, Entrance')
+            .attr({x: 160, y: 350, w: 20, h: 20})
+            .color('yellow')
+            .onHit('Twoway', function(data) {
+                Crafty('Twoway').x = Crafty('Portal').x+5;
+                Crafty('Twoway').y = Crafty('Portal').y-5;
+            });
+ 
         // floor you land on
-    	Crafty.e('Floor, 2D, Canvas, Color')
-        	.attr({x: 20, y: 250, w: 100, h: 10})
-        	.color('red');
-
-       	//invisible wall of death
-		Crafty.e('2D, Collision, Canvas')
-			.attr({x: -1000, y: 900, w: 3000, h: 1})
-			.onHit('Twoway', function(data){
-                killfloor("Level10.html");
-			});
-
-		//-_-
-		createPlayer(10, 100);
-	</script>
+        Crafty.e('Floor, 2D, Canvas, Color')
+            .attr({x: 20, y: 250, w: 100, h: 10})
+            .color('red');
+ 
+        //invisible wall of death
+        Crafty.e('2D, Collision, Canvas')
+            .attr({x: -4000, y: 900, w: 10000, h: 1})
+            .onHit('Twoway', function(data){
+                if(run){
+                    killfloor("Level10.html");
+                    run = false;
+                }
+            });
+ 
+        //-_-
+        createPlayer(10, 100);
+    </script>
 </body>
 </html>

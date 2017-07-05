@@ -19,9 +19,13 @@
             width: "10%"
         })
 
+        var count = 0;
+        var max = 10;
+
+
         Crafty.init(Math.min(screen.width, 2160), Math.min(screen.height, 1440), document.getElementById('game'));
 
-        Crafty.e('2D, Collision, DOM, Color')
+        Crafty.e('2D, Floor, Collision, DOM, Color')
             .attr({x: 100, y: 215, w: 35, h: 35})
             .color('green')
             .onHit('Twoway', function(data){
@@ -29,13 +33,30 @@
             }).bind("EnterFrame", function () {
                 this.x = Math.max(window.innerWidth - 75, 825);
             });
+ 
+        var run = true;
 
-        Crafty.e('2D, Collision, Canvas, Color')
-            .attr({x: 410, y: 200, w: 300, h: 300})
-            .color('black')
-            .onHit('Twoway', function(data) {
-                killfloor("Level5.html");
+        function activate_the_saw(){
+            Crafty.e('2D, AngularMotion, Collision, DOM, Color')
+                .attr({x: 410, y: 200, w: 100, h: 100})
+                .color('black')
+                .onHit('Twoway', function(data) {
+                if(run){
+                    killfloor("Level5.html");
+                    run = false;
+                }
             });
+            Crafty("AngularMotion").vrotation=200;
+            if(count<max){
+                Crafty("AngularMotion").resetAngularMotion();
+                count++;
+                window.setTimeout(activate_the_saw, 200);
+            }else{
+                Crafty("AngularMotion").vrotation=200;
+            }            
+                console.log("count="+count);
+                console.log(Crafty("AngularMotion"));
+        }
 
         Crafty.e('2D, Collision, Canvas')
             .attr({x: -1000, y: 900, w: 3000, h: 1})
@@ -46,18 +67,19 @@
         createPlayer(0, 0, true);
 
 //where map data starts
-        var craftyObjectIds={ent1: "Floor"};
         Crafty.e('Floor, 2D, DOM, Color')
             .attr({x: 0, y: 250, w: 250, h: 10})
             .color('red')
             .bind("EnterFrame", updateDomChanges);
 
-        var platform2 = Crafty.e('Floor, 2D, DOM, Color')
+        Crafty.e('Floor, 2D, DOM, Color')
             .attr({x: 0, y: 250, w: 100, h: 10})
             .color('red')
             .bind("EnterFrame", function () {
                 this.x = Math.max(window.innerWidth - 100, 800);
             });
+
+        activate_the_saw();
     </script>
 </body>
 </html>
